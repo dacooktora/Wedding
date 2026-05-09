@@ -704,8 +704,8 @@
     if (!container) return;
     const realPerCat = getRealizationPerCategory();
     
-    // FILTER: exclude Gaji dan Investasi
-    const weddingCategories = categoriesList.filter(cat => cat.name !== "Gaji" && cat.name !== "Investasi");
+    // FILTER: exclude Gaji dan Tabungan (yang bukan kategori nikah)
+    const weddingCategories = categoriesList.filter(cat => cat.name !== "Gaji" && cat.name !== "Tabungan");
     
     let html = '';
     for (let cat of weddingCategories) {
@@ -730,27 +730,24 @@
     }
     container.innerHTML = html;
     
-    // ... sisanya sama seperti sebelumnya
+    document.querySelectorAll('.category-budget-input').forEach(input => {
+        input.addEventListener('change', (e) => {
+            e.stopPropagation();
+            const catName = input.getAttribute('data-category');
+            let val = parseFloat(input.value);
+            if (!isNaN(val) && val >= 0) categoryBudgets[catName] = val;
+            else categoryBudgets[catName] = 0;
+            refreshUI();
+        });
+    });
     
-        
-        document.querySelectorAll('.category-budget-input').forEach(input => {
-            input.addEventListener('change', (e) => {
-                e.stopPropagation();
-                const catName = input.getAttribute('data-category');
-                let val = parseFloat(input.value);
-                if (!isNaN(val) && val >= 0) categoryBudgets[catName] = val;
-                else categoryBudgets[catName] = 0;
-                refreshUI();
-            });
+    document.querySelectorAll('.category-note-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const catName = btn.getAttribute('data-category');
+            openNoteModal(catName);
         });
-        
-        document.querySelectorAll('.category-note-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const catName = btn.getAttribute('data-category');
-                openNoteModal(catName);
-            });
-        });
+    });
     }
     
     function openNoteModal(categoryName) {
