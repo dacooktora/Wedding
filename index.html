@@ -33,7 +33,7 @@
         }
 
         h1 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #ffffff, #3bc9ff, #c084fc, #f472b6);
             -webkit-background-clip: text;
@@ -48,69 +48,64 @@
         .target-card {
             background: rgba(15, 25, 45, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 16px 24px;
+            border-radius: 20px;
+            padding: 12px 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             border: 1px solid rgba(59, 201, 255, 0.3);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .target-card input {
             background: #07131f;
             border: 1px solid #2c4c6c;
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 40px;
             color: white;
             flex: 1;
-            min-width: 150px;
-            font-size: 0.9rem;
+            min-width: 130px;
+            font-size: 0.85rem;
         }
 
         .btn-small {
             background: linear-gradient(135deg, #0e2a3b, #1a3a4f);
             border: 1px solid #3bc9ff;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 40px;
             color: white;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.75rem;
             transition: all 0.2s;
         }
 
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .kpi-card {
             background: rgba(8, 18, 32, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 12px;
             border: 1px solid rgba(59, 201, 255, 0.25);
-            transition: all 0.3s;
-        }
-
-        .kpi-card:hover {
-            border-color: #3bc9ff;
-            transform: translateY(-3px);
         }
 
         .kpi-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             opacity: 0.6;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
         .kpi-value {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff, #3bc9ff);
             -webkit-background-clip: text;
@@ -121,83 +116,86 @@
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
         .chart-card {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 12px;
             border: 1px solid rgba(59, 201, 255, 0.2);
         }
 
         .chart-card h3 {
-            font-size: 0.85rem;
-            margin-bottom: 12px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
             font-weight: 600;
             color: #aad0ff;
         }
 
         .chart-card canvas {
-            max-height: 200px;
+            max-height: 160px;
             width: 100% !important;
         }
 
-        /* Scroll horizontal untuk chart sisa dana */
-        .horizontal-scroll {
+        /* Scrollable untuk chart sisa dana */
+        .scrollable-chart {
             overflow-x: auto;
             overflow-y: hidden;
             width: 100%;
         }
         
-        .horizontal-chart-container {
-            min-width: 800px;
-            height: 250px;
-            position: relative;
+        .scrollable-chart canvas {
+            min-width: 600px;
+            height: 160px !important;
+            width: auto !important;
         }
 
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 12px;
             }
             .kpi-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                gap: 8px;
             }
             .kpi-value {
-                font-size: 1.1rem;
+                font-size: 1rem;
+            }
+            .scrollable-chart canvas {
+                min-width: 500px;
             }
         }
 
         .progress-section {
             background: rgba(7, 19, 31, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
         }
 
         .progress-bar-bg {
             background: #1a2c3e;
-            border-radius: 40px;
-            height: 28px;
+            border-radius: 30px;
+            height: 24px;
             overflow: hidden;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .progress-fill {
             width: 0%;
             height: 100%;
             background: linear-gradient(90deg, #2dd4bf, #3b82f6, #c084fc);
-            border-radius: 40px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 12px;
-            font-size: 0.75rem;
+            padding-right: 10px;
+            font-size: 0.7rem;
             font-weight: bold;
             transition: width 0.3s;
         }
@@ -206,32 +204,32 @@
         .info-section {
             background: rgba(7, 19, 31, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 24px;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
             border: 1px solid rgba(59, 201, 255, 0.2);
         }
 
         .info-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: #3bc9ff;
         }
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
         }
 
         .category-item {
             background: rgba(10, 20, 35, 0.6);
-            border-radius: 14px;
-            padding: 12px 16px;
+            border-radius: 12px;
+            padding: 10px 14px;
             border: 1px solid rgba(59, 201, 255, 0.15);
             transition: all 0.2s;
             cursor: pointer;
@@ -239,42 +237,42 @@
 
         .category-item:hover {
             border-color: #3bc9ff;
-            background: rgba(59, 201, 255, 0.05);
         }
 
         .category-main {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .category-icon {
-            font-size: 1.3rem;
-            width: 36px;
+            font-size: 1.1rem;
+            width: 28px;
             text-align: center;
         }
 
         .category-name {
             flex: 1;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
         .category-budget-input {
-            width: 120px;
+            width: 100px;
             background: #07131f;
             border: 1px solid #2c4c6c;
             border-radius: 30px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             color: white;
             font-size: 0.7rem;
             text-align: right;
         }
 
         .category-real {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #aad0ff;
-            min-width: 85px;
+            min-width: 75px;
             text-align: right;
         }
 
@@ -283,29 +281,23 @@
             border: none;
             color: #3bc9ff;
             cursor: pointer;
-            font-size: 0.9rem;
-            padding: 5px;
+            font-size: 0.8rem;
+            padding: 4px 8px;
             border-radius: 20px;
-            transition: all 0.2s;
-        }
-
-        .category-note-btn:hover {
-            background: rgba(59, 201, 255, 0.2);
-            transform: scale(1.05);
         }
 
         .category-note-preview {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #8aaec0;
-            margin-top: 8px;
-            padding-left: 48px;
+            margin-top: 6px;
+            padding-left: 38px;
             font-style: italic;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Modal Catatan */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -317,51 +309,43 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             background: #0f1e2e;
-            border-radius: 24px;
-            padding: 24px;
+            border-radius: 20px;
+            padding: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             border: 1px solid #3bc9ff;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        .modal-content h3 {
-            margin-bottom: 16px;
-            color: #3bc9ff;
         }
 
         .modal-content textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #07131f;
             border: 1px solid #2c4c6c;
-            border-radius: 12px;
+            border-radius: 10px;
             color: white;
             font-family: inherit;
-            font-size: 0.85rem;
-            resize: vertical;
-            margin-bottom: 16px;
+            font-size: 0.8rem;
+            margin-bottom: 14px;
         }
 
         .modal-buttons {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: flex-end;
         }
 
         .modal-buttons button {
-            padding: 8px 20px;
-            border-radius: 30px;
+            padding: 6px 16px;
+            border-radius: 25px;
             border: none;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.75rem;
         }
-
         .btn-save { background: #10b981; color: white; }
         .btn-cancel { background: #475569; color: white; }
         .btn-delete { background: #ef4444; color: white; }
@@ -369,7 +353,7 @@
         /* Tabel */
         .table-container {
             overflow-x: auto;
-            border-radius: 20px;
+            border-radius: 16px;
             margin-bottom: 20px;
             background: rgba(8, 18, 32, 0.5);
             border: 1px solid rgba(59, 201, 255, 0.15);
@@ -377,14 +361,14 @@
 
         .data-table {
             width: 100%;
-            min-width: 700px;
+            min-width: 600px;
             border-collapse: collapse;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         .data-table th {
             background: linear-gradient(135deg, #0e1a2b, #0f1e30);
-            padding: 14px 10px;
+            padding: 10px 8px;
             text-align: left;
             font-weight: 700;
             color: #3bc9ff;
@@ -392,7 +376,7 @@
         }
 
         .data-table td {
-            padding: 12px 10px;
+            padding: 10px 8px;
             border-bottom: 1px solid #2a3a4e;
             background: rgba(10, 20, 35, 0.6);
         }
@@ -400,8 +384,8 @@
         .data-table select {
             background: #0f212f;
             border: 1px solid #2c4c6c;
-            padding: 6px 10px;
-            border-radius: 8px;
+            padding: 5px 8px;
+            border-radius: 6px;
             color: white;
             font-size: 0.7rem;
             width: 100%;
@@ -409,10 +393,10 @@
 
         [contenteditable="true"] {
             background: #0f212f;
-            border-radius: 8px;
-            padding: 6px 10px;
+            border-radius: 6px;
+            padding: 5px 8px;
             display: inline-block;
-            min-width: 80px;
+            min-width: 70px;
             cursor: text;
         }
 
@@ -421,13 +405,13 @@
         }
 
         .status-cell {
-            min-width: 120px;
+            min-width: 110px;
         }
 
         .status-bar-container {
             background: #1a2c3e;
             border-radius: 20px;
-            height: 28px;
+            height: 24px;
             overflow: hidden;
         }
 
@@ -437,8 +421,8 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 8px;
-            font-size: 0.65rem;
+            padding-right: 6px;
+            font-size: 0.6rem;
             font-weight: bold;
             color: white;
             transition: width 0.2s;
@@ -451,9 +435,9 @@
         .level-100 { background: linear-gradient(90deg, #a855f7, #c084fc); }
 
         .action-icons i {
-            margin: 0 6px;
+            margin: 0 5px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .fa-trash-alt:hover { color: #ff6b6b; }
@@ -462,48 +446,47 @@
         .button-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .btn-futur {
             background: linear-gradient(135deg, #0e2a3b, #1a3a4f);
             border: 1px solid #3bc9ff;
-            padding: 10px 20px;
-            border-radius: 40px;
+            padding: 8px 16px;
+            border-radius: 30px;
             font-weight: 600;
             color: white;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.2s;
-        }
-
-        .btn-futur:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(59, 201, 255, 0.3);
         }
 
         .sync-badge {
             position: fixed;
-            bottom: 16px;
-            right: 16px;
+            bottom: 12px;
+            right: 12px;
             background: #0a1f2c;
-            border-radius: 30px;
-            padding: 6px 14px;
-            font-size: 0.65rem;
+            border-radius: 25px;
+            padding: 4px 12px;
+            font-size: 0.6rem;
             border: 1px solid #3bc9ff;
             z-index: 999;
         }
 
         footer {
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             opacity: 0.5;
-            margin-top: 20px;
-            margin-bottom: 40px;
+            margin-top: 16px;
+            margin-bottom: 35px;
+        }
+        
+        option i {
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -512,18 +495,18 @@
     <h1><i class="fas fa-ring"></i> Wedding Budget Ultimate</h1>
     
     <div class="target-card">
-        <i class="fas fa-bullseye" style="color:#2dd4bf; font-size:1.3rem;"></i>
-        <span>TARGET TOTAL NIKAH:</span>
+        <i class="fas fa-bullseye" style="color:#2dd4bf;"></i>
+        <span>TARGET TOTAL:</span>
         <strong id="displayTarget">Rp 0</strong>
-        <input type="number" id="targetInput" placeholder="Target total" value="75000000">
-        <button class="btn-small" id="updateTargetBtn">Set Target</button>
+        <input type="number" id="targetInput" placeholder="Target" value="75000000">
+        <button class="btn-small" id="updateTargetBtn">Set</button>
     </div>
 
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-wallet"></i> TERKUMPUL</div><div class="kpi-value" id="totalIncome">Rp 0</div></div>
-        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-receipt"></i> TERPAKAI</div><div class="kpi-value" id="totalExpense">Rp 0</div></div>
-        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-scale-balanced"></i> SISA DANA</div><div class="kpi-value" id="balance">Rp 0</div></div>
-        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-chart-simple"></i> CAPAIAN</div><div class="kpi-value" id="targetPercent">0%</div></div>
+        <div class="kpi-card"><div class="kpi-label">💰 TERKUMPUL</div><div class="kpi-value" id="totalIncome">Rp 0</div></div>
+        <div class="kpi-card"><div class="kpi-label">💸 TERPAKAI</div><div class="kpi-value" id="totalExpense">Rp 0</div></div>
+        <div class="kpi-card"><div class="kpi-label">⚖️ SISA DANA</div><div class="kpi-value" id="balance">Rp 0</div></div>
+        <div class="kpi-card"><div class="kpi-label">🎯 CAPAIAN</div><div class="kpi-value" id="targetPercent">0%</div></div>
     </div>
 
     <!-- 4 CHART GRID -->
@@ -532,23 +515,20 @@
         <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Target Nikah</h3><canvas id="targetGaugeChart"></canvas></div>
         <div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Arus Dana</h3><canvas id="incomeExpenseBarChart"></canvas></div>
         <div class="chart-card">
-            <h3><i class="fas fa-coins"></i> Sisa Dana per Kategori <span style="font-size:0.6rem;">(geser →)</span></h3>
-            <div class="horizontal-scroll">
-                <div class="horizontal-chart-container">
-                    <canvas id="remainingBudgetChart" style="height:220px; width:100%;"></canvas>
-                </div>
+            <h3><i class="fas fa-coins"></i> Sisa Dana per Kategori <span style="font-size:0.55rem;">(geser →)</span></h3>
+            <div class="scrollable-chart">
+                <canvas id="remainingBudgetChart"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- PROGRESS SECTION -->
     <div class="progress-section">
         <div style="display: flex; justify-content: space-between;">
             <span><i class="fas fa-flag-checkered"></i> PROGRESS KE TARGET</span>
-            <span id="progressText" style="font-weight:800;">0%</span>
+            <span id="progressText" style="font-weight:700;">0%</span>
         </div>
         <div class="progress-bar-bg"><div class="progress-fill" id="milestoneFill">0%</div></div>
-        <div id="cheerMessage" style="margin-top:8px;"></div>
+        <div id="cheerMessage" style="margin-top:6px; font-size:0.7rem;"></div>
     </div>
 
     <!-- SECTION INFORMASI -->
@@ -559,7 +539,7 @@
         <div class="categories-grid" id="categoriesGrid"></div>
     </div>
 
-    <!-- TABEL EXCEL (Tanpa Deskripsi) -->
+    <!-- TABEL -->
     <div class="table-container">
         <table class="data-table">
             <thead>
@@ -578,11 +558,10 @@
 </div>
 <div class="sync-badge"><i class="fas fa-cloud-upload-alt"></i> Live Sync</div>
 
-<!-- MODAL CATATAN -->
 <div id="noteModal" class="modal">
     <div class="modal-content">
         <h3 id="modalCategoryTitle">Catatan untuk <span id="modalCatName"></span></h3>
-        <textarea id="noteText" rows="4" placeholder="Tulis catatan di sini...&#10;Contoh: Menu ayam, bebek, ikan&#10;DP sudah 5jt&#10;Kontak: 0812xxxx"></textarea>
+        <textarea id="noteText" rows="4" placeholder="Tulis catatan di sini..."></textarea>
         <div class="modal-buttons">
             <button class="btn-delete" id="deleteNoteBtn">Hapus</button>
             <button class="btn-cancel" id="cancelNoteBtn">Batal</button>
@@ -592,7 +571,6 @@
 </div>
 
 <script>
-    // FIREBASE CONFIG
     const firebaseConfig = {
         apiKey: "AIzaSyDE1rDGnRJ-S38Qsu7lTUYKUG1fzJhWpRc",
         authDomain: "wedding-26918.firebaseapp.com",
@@ -609,7 +587,7 @@
     let transactions = [];
     let targetAmount = 75000000;
     let categoryBudgets = {};
-    let categoryNotes = {}; // { "Catering": "Menu ayam bebek..." }
+    let categoryNotes = {};
     let isSyncing = false;
     let chartObjs = { pie: null, gauge: null, bar: null, remaining: null };
     let currentCategoryForModal = null;
@@ -654,7 +632,6 @@
         return real;
     }
     
-    // RENDER INFO SECTION
     function renderInfoSection() {
         const container = document.getElementById('categoriesGrid');
         if (!container) return;
@@ -674,7 +651,7 @@
                         <div class="category-name">${cat.name}</div>
                         <div class="category-real">${formatRp(real)}</div>
                         <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
-                        <button class="category-note-btn" data-category="${cat.name}" title="Tambah Catatan"><i class="fas fa-edit"></i></button>
+                        <button class="category-note-btn" data-category="${cat.name}" title="Catatan"><i class="fas fa-edit"></i></button>
                     </div>
                     ${note ? `<div class="category-note-preview"><i class="fas fa-quote-left"></i> ${escapeHtml(notePreview)}</div>` : ''}
                 </div>
@@ -682,7 +659,6 @@
         }
         container.innerHTML = html;
         
-        // Event budget change
         document.querySelectorAll('.category-budget-input').forEach(input => {
             input.addEventListener('change', (e) => {
                 e.stopPropagation();
@@ -694,7 +670,6 @@
             });
         });
         
-        // Event note button
         document.querySelectorAll('.category-note-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -707,16 +682,11 @@
     function openNoteModal(categoryName) {
         currentCategoryForModal = categoryName;
         document.getElementById('modalCatName').innerText = categoryName;
-        const existingNote = categoryNotes[categoryName] || '';
-        document.getElementById('noteText').value = existingNote;
+        document.getElementById('noteText').value = categoryNotes[categoryName] || '';
         document.getElementById('noteModal').style.display = 'flex';
     }
     
-    function closeNoteModal() {
-        document.getElementById('noteModal').style.display = 'none';
-        currentCategoryForModal = null;
-    }
-    
+    function closeNoteModal() { document.getElementById('noteModal').style.display = 'none'; currentCategoryForModal = null; }
     function saveNote() {
         if (currentCategoryForModal) {
             const note = document.getElementById('noteText').value;
@@ -726,21 +696,17 @@
         }
         closeNoteModal();
     }
-    
     function deleteNote() {
-        if (currentCategoryForModal) {
-            delete categoryNotes[currentCategoryForModal];
-            refreshUI();
-        }
+        if (currentCategoryForModal) delete categoryNotes[currentCategoryForModal];
+        refreshUI();
         closeNoteModal();
     }
     
-    // RENDER TABLE (tanpa deskripsi)
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         if (!tbody) return;
         if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;">✨ Klik "Tambah di Atas" untuk memulai ✨</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">✨ Klik "Tambah di Atas" ✨</td></tr>';
             return;
         }
         
@@ -755,11 +721,15 @@
             else if (percent >= 51) statusClass = 'level-51-75';
             else if (percent >= 26) statusClass = 'level-26-50';
             
+            // Cari icon untuk kategori
+            const catData = categoriesList.find(c => c.name === t.category);
+            const iconHtml = catData ? `<i class="${catData.icon}" style="margin-right:6px;"></i>` : '';
+            
             html += `<tr data-idx="${i}">
                 <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
                 <td>
                     <select data-field="category" data-idx="${i}" class="category-select">
-                        ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
+                        ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}><i class="${cat.icon}"></i> ${cat.name}</option>`).join('')}
                     </select>
                 </td>
                 <td>
@@ -827,22 +797,20 @@
     window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
     window.duplicateTx = (i) => { transactions.splice(i, 0, { ...transactions[i] }); refreshUI(); };
     
-    // CHART SISA DANA (horizontal bar, warna beda, bisa scroll)
+    // CHART REMAINING - VERTICAL BAR DENGAN SCROLL
     function updateRemainingChart() {
         const realPerCat = getRealizationPerCategory();
         let remainingLabels = [], remainingData = [], backgroundColors = [];
-        const colorPalette = ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981', '#f472b6', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#ef4444', '#14b8a6', '#d946ef', '#f97316'];
+        const colorPalette = ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981', '#f472b6', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#ef4444', '#14b8a6', '#d946ef', '#f97316', '#6366f1', '#eab308', '#a855f7', '#22c55e', '#ef4444', '#0ea5e9', '#9333ea'];
         
         for (let i = 0; i < categoriesList.length; i++) {
             const cat = categoriesList[i];
             const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
             const real = realPerCat[cat.name] || 0;
             const remaining = Math.max(0, budget - real);
-            if (remaining > 0 || real > 0) {
-                remainingLabels.push(cat.name);
-                remainingData.push(remaining);
-                backgroundColors.push(colorPalette[i % colorPalette.length]);
-            }
+            remainingLabels.push(cat.name);
+            remainingData.push(remaining);
+            backgroundColors.push(colorPalette[i % colorPalette.length]);
         }
         
         const ctx = document.getElementById('remainingBudgetChart')?.getContext('2d');
@@ -854,9 +822,14 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
-                    indexAxis: 'y',
-                    plugins: { legend: { position: 'top', labels: { font: { size: 9 } } }, tooltip: { callbacks: { label: (ctx) => `Sisa: ${formatRp(ctx.raw)}` } } },
-                    scales: { x: { ticks: { callback: v => (v / 1e6).toFixed(0) + 'jt' } } }
+                    plugins: { 
+                        legend: { position: 'top', labels: { font: { size: 9 } } }, 
+                        tooltip: { callbacks: { label: (ctx) => `Sisa: ${formatRp(ctx.raw)}` } }
+                    },
+                    scales: { 
+                        x: { ticks: { rotation: -45, autoSkip: false, font: { size: 9 } } },
+                        y: { ticks: { callback: v => (v / 1e6).toFixed(0) + 'jt', font: { size: 9 } } }
+                    }
                 }
             });
         }
@@ -874,7 +847,7 @@
         const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
         if (ctx) {
             if (chartObjs.pie) chartObjs.pie.destroy();
-            chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true } });
+            chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } } });
         }
     }
     
@@ -884,7 +857,7 @@
         const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
         if (ctx) {
             if (chartObjs.gauge) chartObjs.gauge.destroy();
-            chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true } });
+            chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } } });
         }
     }
     
@@ -893,7 +866,7 @@
         const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
         if (ctx) {
             if (chartObjs.bar) chartObjs.bar.destroy();
-            chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt' } } } } });
+            chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt', font: { size: 9 } } } }, plugins: { legend: { position: 'top', labels: { font: { size: 9 } } } } } });
         }
     }
     
@@ -952,8 +925,8 @@
             }
             if (!transactions.length) {
                 transactions = [
-                    { date: "2025-05-01", desc: "", category: "Prewedding", type: "Pemasukan", amount: 25000000 },
-                    { date: "2025-05-03", desc: "", category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
+                    { date: "2025-05-01", category: "Prewedding", type: "Pemasukan", amount: 25000000 },
+                    { date: "2025-05-03", category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
                 ];
             }
             isSyncing = false;
@@ -970,7 +943,6 @@
         });
     }
     
-    // EVENT LISTENERS
     document.getElementById('addRowBtn')?.addEventListener('click', () => {
         transactions.unshift({ date: new Date().toISOString().slice(0,10), category: "Prewedding", type: "Pengeluaran", amount: 0 });
         refreshUI();
@@ -991,7 +963,6 @@
         refreshUI();
     });
     
-    // MODAL EVENTS
     document.getElementById('saveNoteBtn')?.addEventListener('click', saveNote);
     document.getElementById('cancelNoteBtn')?.addEventListener('click', closeNoteModal);
     document.getElementById('deleteNoteBtn')?.addEventListener('click', deleteNote);
