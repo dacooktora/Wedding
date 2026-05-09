@@ -124,6 +124,7 @@
             color: transparent;
         }
 
+        /* GRID CHART - PAKAI KOTAK! */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -131,12 +132,15 @@
             margin-bottom: 20px;
         }
 
+        /* SETIAP CHART CARD HARUS KOTAK, TIDAK MELEBAR */
         .chart-card {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             padding: 12px;
             border: 1px solid rgba(59, 201, 255, 0.2);
+            overflow: hidden;
+            min-width: 0;
         }
 
         .chart-card h3 {
@@ -146,12 +150,13 @@
             color: #aad0ff;
         }
 
-        .chart-card canvas {
+        /* CHART LAIN (PIE, GAUGE, BAR) - NORMAL */
+        .chart-card canvas:not(.scrollable-chart-inner canvas) {
             max-height: 160px;
             width: 100% !important;
         }
 
-        /* SCROLLABLE CHART - FIX: card tetap kecil, isi chart yang digeser */
+        /* SCROLLABLE CHART - VIEWPORT KECIL, ISI BISA DIGESER */
         .scrollable-chart {
             width: 100%;
             overflow-x: auto;
@@ -159,6 +164,7 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        /* SCROLLBAR CANTIK */
         .scrollable-chart::-webkit-scrollbar {
             height: 6px;
         }
@@ -173,9 +179,10 @@
             border-radius: 10px;
         }
 
+        /* INI PALING PENTING: VIEWPORT KECIL, CANVAS TETAP LEBAR */
         .scrollable-chart-inner {
-            width: 900px;
-            height: 160px;
+            width: 1000px;  /* Canvas tetap lebar muat semua kategori */
+            height: 180px;
             position: relative;
         }
 
@@ -184,6 +191,7 @@
             height: 100% !important;
         }
 
+        /* RESPONSIVE: HP lebih kecil viewport-nya */
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -196,9 +204,24 @@
             .kpi-value {
                 font-size: 1rem;
             }
+            /* HP: viewport lebih kecil, cuma nampilin ~4 batang */
             .scrollable-chart-inner {
                 width: 750px;
-                height: 150px;
+                height: 160px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .scrollable-chart-inner {
+                width: 850px;
+                height: 170px;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .scrollable-chart-inner {
+                width: 1000px;
+                height: 180px;
             }
         }
 
@@ -542,7 +565,7 @@
         <div class="kpi-card"><div class="kpi-label">🎯 CAPAIAN</div><div class="kpi-value" id="targetPercent">0%</div></div>
     </div>
 
-    <!-- 4 CHART GRID -->
+    <!-- 4 CHART GRID - SEMUA KOTAK -->
     <div class="charts-grid">
         <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Kategori Pengeluaran</h3><canvas id="categoryPieChart"></canvas></div>
         <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Target Nikah</h3><canvas id="targetGaugeChart"></canvas></div>
@@ -781,7 +804,7 @@
                     <i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i>
                     <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i>
                 </td>
-            </table>`;
+            </tr>`;
         }
         tbody.innerHTML = html;
         
@@ -828,11 +851,10 @@
     window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
     window.duplicateTx = (i) => { transactions.splice(i, 0, { ...transactions[i] }); refreshUI(); };
     
-    // CHART REMAINING - VERTICAL BAR DENGAN SCROLL (FIX: maintainAspectRatio: false)
     function updateRemainingChart() {
         const realPerCat = getRealizationPerCategory();
         let remainingLabels = [], remainingData = [], backgroundColors = [];
-        const colorPalette = ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981', '#f472b6', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#ef4444', '#14b8a6', '#d946ef', '#f97316', '#6366f1', '#eab308', '#a855f7', '#22c55e', '#ef4444', '#0ea5e9', '#9333ea'];
+        const colorPalette = ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981', '#f472b6', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#ef4444', '#14b8a6', '#d946ef', '#f97316', '#6366f1', '#eab308', '#a855f7', '#22c55e', '#0ea5e9', '#9333ea', '#e11d48'];
         
         for (let i = 0; i < categoriesList.length; i++) {
             const cat = categoriesList[i];
@@ -852,7 +874,7 @@
                 data: { labels: remainingLabels, datasets: [{ label: 'Sisa Anggaran (Rp)', data: remainingData, backgroundColor: backgroundColors, borderRadius: 6 }] },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,  // FIX: biar chart nurutin ukuran div inner
+                    maintainAspectRatio: false,
                     plugins: { 
                         legend: { position: 'top', labels: { font: { size: 9 } } }, 
                         tooltip: { callbacks: { label: (ctx) => `Sisa: ${formatRp(ctx.raw)}` } }
