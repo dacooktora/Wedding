@@ -3,90 +3,481 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Wedding Budget | Final Fix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Wedding Budget | Futuristic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef5ff; padding: 12px; overflow-x: hidden; }
-        .container { max-width: 1200px; margin: 0 auto; width: 100%; }
-        h1 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #fff, #3bc9ff, #a970ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 12px; }
-        .target-card { background: rgba(15, 25, 45, 0.95); border-radius: 16px; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; border-left: 3px solid #2dd4bf; margin-bottom: 16px; }
-        .target-card input { background: #07131f; border: 1px solid #2c4c6c; padding: 8px 12px; border-radius: 40px; color: white; flex: 1; min-width: 100px; font-size: 0.85rem; }
-        .btn-small { background: #0e2a3b; border: 1px solid #3bc9ff; padding: 8px 16px; border-radius: 40px; color: white; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
-        .btn-small:active { transform: scale(0.96); }
-        .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
-        .kpi-card { background: rgba(8, 18, 32, 0.95); border-radius: 14px; padding: 10px; border: 1px solid rgba(59, 201, 255, 0.25); }
-        .kpi-label { font-size: 0.65rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; }
-        .kpi-value { font-size: 1.2rem; font-weight: 800; word-break: break-word; }
-        .charts-wrapper { overflow-x: auto; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
-        .charts-row { display: flex; gap: 12px; min-width: min-content; }
-        .chart-box { background: rgba(0, 0, 0, 0.5); border-radius: 16px; padding: 10px; width: 260px; flex-shrink: 0; }
-        .chart-box h3 { font-size: 0.75rem; margin-bottom: 8px; }
-        .chart-box canvas { max-height: 150px; width: 100% !important; }
-        .progress-section { background: rgba(7, 19, 31, 0.95); border-radius: 16px; padding: 12px; margin-bottom: 16px; }
-        .progress-bar-bg { background: #1a2c3e; border-radius: 30px; height: 22px; overflow: hidden; margin-top: 6px; }
-        .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #2dd4bf, #3b82f6); border-radius: 30px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.65rem; font-weight: bold; }
-        .table-container { overflow-x: auto; border-radius: 14px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
-        .data-table { width: 100%; min-width: 550px; border-collapse: collapse; font-size: 0.7rem; }
-        .data-table th { background: #0e1a2b; padding: 10px 6px; text-align: left; font-weight: 600; color: #aad0ff; }
-        .data-table td { padding: 8px 6px; border-bottom: 1px solid #2a3a4e; background: rgba(10, 20, 35, 0.8); }
-        [contenteditable="true"] { background: #0f212f; border-radius: 6px; padding: 4px 6px; display: inline-block; min-width: 50px; }
-        .action-icons i { margin: 0 5px; cursor: pointer; font-size: 0.9rem; }
-        .button-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-        .btn-futur { background: #0e2a3b; border: 1px solid #3bc9ff; padding: 8px 14px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-futur:active { transform: scale(0.96); }
-        .sync-badge { position: fixed; bottom: 8px; right: 8px; background: #0a1f2c; border-radius: 20px; padding: 3px 8px; font-size: 0.55rem; border: 1px solid cyan; z-index: 999; }
-        footer { text-align: center; font-size: 0.55rem; opacity: 0.5; margin-top: 16px; margin-bottom: 30px; }
-        @media (min-width: 768px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } .chart-box { width: 320px; } h1 { font-size: 1.8rem; } .kpi-value { font-size: 1.5rem; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            color: #eef5ff;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header Futuristik */
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #3bc9ff, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 i {
+            background: linear-gradient(135deg, #3bc9ff, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+        }
+
+        /* Target Card */
+        .target-card {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 16px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            border: 1px solid rgba(59, 201, 255, 0.3);
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .target-card i {
+            font-size: 1.5rem;
+            color: #2dd4bf;
+        }
+
+        .target-card span {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .target-card strong {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2dd4bf, #3bc9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .target-card input {
+            background: #07131f;
+            border: 1px solid #2c4c6c;
+            padding: 10px 16px;
+            border-radius: 40px;
+            color: white;
+            flex: 1;
+            min-width: 150px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-small {
+            background: linear-gradient(135deg, #0e2a3b, #1a3a4f);
+            border: 1px solid #3bc9ff;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 201, 255, 0.3);
+            border-color: #2dd4bf;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: rgba(8, 18, 32, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid rgba(59, 201, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            border-color: #3bc9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 201, 255, 0.15);
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.6;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            word-break: break-word;
+            background: linear-gradient(135deg, #fff, #3bc9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Charts */
+        .charts-wrapper {
+            overflow-x: auto;
+            margin-bottom: 24px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .charts-row {
+            display: flex;
+            gap: 20px;
+            min-width: min-content;
+        }
+
+        .chart-box {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 16px;
+            width: 300px;
+            flex-shrink: 0;
+            border: 1px solid rgba(59, 201, 255, 0.2);
+        }
+
+        .chart-box h3 {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #aad0ff;
+        }
+
+        .chart-box canvas {
+            max-height: 160px;
+            width: 100% !important;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: rgba(7, 19, 31, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(59, 201, 255, 0.2);
+        }
+
+        .progress-bar-bg {
+            background: #1a2c3e;
+            border-radius: 40px;
+            height: 28px;
+            overflow: hidden;
+            margin-top: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #2dd4bf, #3b82f6, #c084fc);
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: width 0.3s ease;
+        }
+
+        #cheerMessage {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Tabel Futuristik */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+            background: rgba(8, 18, 32, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(59, 201, 255, 0.15);
+        }
+
+        .data-table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #0e1a2b, #0f1e30);
+            padding: 14px 10px;
+            text-align: left;
+            font-weight: 700;
+            color: #3bc9ff;
+            border-bottom: 2px solid #2dd4bf;
+        }
+
+        .data-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #2a3a4e;
+            background: rgba(10, 20, 35, 0.6);
+        }
+
+        .data-table tr:hover td {
+            background: rgba(59, 201, 255, 0.08);
+        }
+
+        [contenteditable="true"] {
+            background: #0f212f;
+            border-radius: 8px;
+            padding: 6px 10px;
+            display: inline-block;
+            min-width: 80px;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:focus {
+            outline: 2px solid #3bc9ff;
+            background: #1a2f40;
+        }
+
+        select {
+            background: #0f212f;
+            border: 1px solid #2c4c6c;
+            padding: 6px 10px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.7rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        select:focus {
+            outline: 2px solid #3bc9ff;
+        }
+
+        /* Status Progress Bar di Tabel */
+        .status-cell {
+            min-width: 100px;
+        }
+
+        .status-bar-container {
+            background: #1a2c3e;
+            border-radius: 20px;
+            height: 24px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .status-bar-fill {
+            height: 100%;
+            width: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 6px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: white;
+            transition: width 0.2s ease;
+        }
+
+        .status-bar-fill.level-0-25 { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .status-bar-fill.level-26-50 { background: linear-gradient(90deg, #10b981, #34d399); }
+        .status-bar-fill.level-51-75 { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .status-bar-fill.level-76-99 { background: linear-gradient(90deg, #f97316, #fb923c); }
+        .status-bar-fill.level-100 { background: linear-gradient(90deg, #a855f7, #c084fc); }
+
+        .action-icons i {
+            margin: 0 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .action-icons i:hover {
+            transform: scale(1.1);
+        }
+
+        .fa-trash-alt:hover { color: #ff6b6b; }
+        .fa-copy:hover { color: #3bc9ff; }
+
+        /* Button Group */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-futur {
+            background: linear-gradient(135deg, #0e2a3b, #1a3a4f);
+            border: 1px solid #3bc9ff;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-futur:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 201, 255, 0.3);
+            border-color: #2dd4bf;
+        }
+
+        .btn-futur-danger {
+            border-color: #ff6b6b;
+        }
+
+        .btn-futur-danger:hover {
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .sync-badge {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: #0a1f2c;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 0.65rem;
+            border: 1px solid #3bc9ff;
+            z-index: 999;
+            backdrop-filter: blur(5px);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.6rem;
+            opacity: 0.5;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .kpi-value { font-size: 1.2rem; }
+            h1 { font-size: 1.4rem; }
+            .chart-box { width: 260px; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1><i class="fas fa-chart-line"></i> Wedding Budget Sync</h1>
+    <h1><i class="fas fa-rocket"></i> Wedding Budget Futuristic</h1>
+    
     <div class="target-card">
-        <i class="fas fa-bullseye" style="color:#2dd4bf"></i>
-        <span style="font-size:0.75rem;">TARGET:</span>
+        <i class="fas fa-bullseye"></i>
+        <span>TARGET DANA NIKAH:</span>
         <strong id="displayTarget">Rp 0</strong>
-        <input type="number" id="targetInput" placeholder="Target" value="75000000">
-        <button class="btn-small" id="updateTargetBtn">Set</button>
+        <input type="number" id="targetInput" placeholder="Masukkan target" value="75000000">
+        <button class="btn-small" id="updateTargetBtn"><i class="fas fa-sync-alt"></i> Set Target</button>
     </div>
+
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-label">💰 TERKUMPUL</div><div class="kpi-value" id="totalIncome">Rp 0</div></div>
-        <div class="kpi-card"><div class="kpi-label">💸 TERPAKAI</div><div class="kpi-value" id="totalExpense">Rp 0</div></div>
-        <div class="kpi-card"><div class="kpi-label">⚖️ SISA</div><div class="kpi-value" id="balance">Rp 0</div></div>
-        <div class="kpi-card"><div class="kpi-label">🎯 CAPAI</div><div class="kpi-value" id="targetPercent">0%</div></div>
+        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-wallet"></i> TERKUMPUL</div><div class="kpi-value" id="totalIncome">Rp 0</div></div>
+        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-receipt"></i> TERPAKAI</div><div class="kpi-value" id="totalExpense">Rp 0</div></div>
+        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-scale-balanced"></i> SISA DANA</div><div class="kpi-value" id="balance">Rp 0</div></div>
+        <div class="kpi-card"><div class="kpi-label"><i class="fas fa-chart-simple"></i> CAPAIAN</div><div class="kpi-value" id="targetPercent">0%</div></div>
     </div>
+
     <div class="charts-wrapper">
         <div class="charts-row">
-            <div class="chart-box"><h3><i class="fas fa-chart-pie"></i> Kategori</h3><canvas id="categoryPieChart"></canvas></div>
-            <div class="chart-box"><h3><i class="fas fa-chart-line"></i> Target</h3><canvas id="targetGaugeChart"></canvas></div>
-            <div class="chart-box"><h3><i class="fas fa-chart-bar"></i> Pemasukan vs Pengeluaran</h3><canvas id="incomeExpenseBarChart"></canvas></div>
+            <div class="chart-box"><h3><i class="fas fa-chart-pie"></i> Kategori Pengeluaran</h3><canvas id="categoryPieChart"></canvas></div>
+            <div class="chart-box"><h3><i class="fas fa-chart-line"></i> Target Nikah</h3><canvas id="targetGaugeChart"></canvas></div>
+            <div class="chart-box"><h3><i class="fas fa-chart-bar"></i> Arus Dana</h3><canvas id="incomeExpenseBarChart"></canvas></div>
         </div>
     </div>
+
     <div class="progress-section">
-        <div style="display: flex; justify-content: space-between;"><span><i class="fas fa-flag-checkered"></i> PROGRESS KE TARGET</span><span id="progressText">0%</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span><i class="fas fa-flag-checkered"></i> PROGRESS KE TARGET</span>
+            <span id="progressText" style="font-weight: 800;">0%</span>
+        </div>
         <div class="progress-bar-bg"><div class="progress-fill" id="milestoneFill">0%</div></div>
-        <div id="cheerMessage" style="margin-top: 6px; font-size:0.7rem;"></div>
+        <div id="cheerMessage" style="margin-top: 8px;"></div>
     </div>
+
     <div class="table-container">
-        <table class="data-table"><thead><tr><th>Tanggal</th><th>Deskripsi</th><th>Kategori</th><th>Tipe</th><th>Jumlah (Rp)</th><th>Aksi</th></tr></thead><tbody id="tableBody"></tbody>}</table>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Deskripsi</th>
+                    <th>Tipe</th>
+                    <th>Jumlah (Rp)</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
+
     <div class="button-group">
-        <button class="btn-futur" id="addRowBtn"><i class="fas fa-plus"></i> Tambah</button>
-        <button class="btn-futur" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Export</button>
-        <button class="btn-futur" id="resetSampleBtn"><i class="fas fa-database"></i> Reset Sample</button>
+        <button class="btn-futur" id="addRowBtn"><i class="fas fa-plus-circle"></i> Tambah di Atas</button>
+        <button class="btn-futur" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Export Excel</button>
+        <button class="btn-futur btn-futur-danger" id="clearAllBtn"><i class="fas fa-trash-alt"></i> Hapus Semua Data</button>
     </div>
-    <footer>✨ Double klik sel untuk edit | Real-time sync dengan pasangan</footer>
+    <footer>✨ Double klik sel untuk edit | Pilih tipe dari dropdown | Progress bar otomatis | Live sync Firebase</footer>
 </div>
-<div class="sync-badge"><i class="fas fa-cloud-upload-alt"></i> Live Sync</div>
+<div class="sync-badge"><i class="fas fa-cloud-upload-alt"></i> Live Sync Active</div>
 
 <script>
-    // ==================== 🔥 GANTI DENGAN CONFIG FIREBASE KAMU 🔥 ====================
+    // ==================== FIREBASE CONFIG ====================
     const firebaseConfig = {
         apiKey: "AIzaSyDE1rDGnRJ-S38Qsu7lTUYKUG1fzJhWpRc",
         authDomain: "wedding-26918.firebaseapp.com",
@@ -96,20 +487,58 @@
         messagingSenderId: "156173019796",
         appId: "1:156173019796:web:bc23f9a7be015a9d4f6281"
     };
-    // ==================================================================================
     
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
+    // ==================== GLOBAL VARIABLES ====================
     let transactions = [];
     let targetAmount = 75000000;
     let isSyncing = false;
-    let refreshTimer = null;
-    let chartCache = { pie: '', gauge: '', bar: '' };
     let chartObjs = { pie: null, gauge: null, bar: null };
+    let chartCache = { pie: '', gauge: '', bar: '' };
     
-    function formatRp(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n); }
+    // ==================== HELPERS ====================
+    function formatRp(num) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
+    }
     
+    function formatNumberDot(num) {
+        return new Intl.NumberFormat('id-ID').format(num);
+    }
+    
+    function parseRp(str) {
+        if (!str) return 0;
+        const cleaned = String(str).replace(/[^0-9,-]/g, '').replace(/,/g, '');
+        return parseFloat(cleaned) || 0;
+    }
+    
+    // Hitung total pemasukan (untuk progress bar status)
+    function getTotalIncome() {
+        let inc = 0;
+        for (let t of transactions) {
+            if (t.type === 'Pemasukan') inc += (t.amount || 0);
+        }
+        return inc;
+    }
+    
+    // Status progress untuk setiap baris -> persen dari jumlah / total pemasukan
+    function getStatusPercent(amount, type) {
+        const totalIncome = getTotalIncome();
+        if (type === 'Pemasukan' || totalIncome === 0) return 0;
+        let percent = (amount / totalIncome) * 100;
+        return Math.min(100, Math.max(0, percent));
+    }
+    
+    function getStatusClass(percent) {
+        if (percent === 100) return 'level-100';
+        if (percent >= 76) return 'level-76-99';
+        if (percent >= 51) return 'level-51-75';
+        if (percent >= 26) return 'level-26-50';
+        return 'level-0-25';
+    }
+    
+    // Hitung total pemasukan & pengeluaran
     function calcTotals() {
         let inc = 0, exp = 0;
         for (let t of transactions) {
@@ -119,28 +548,69 @@
         return { income: inc, expense: exp };
     }
     
+    // ==================== RENDER TABLE DENGAN STATUS PROGRESS BAR ====================
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         if (!tbody) return;
-        if (transactions.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">✨ Klik Tambah atau Reset Sample ✨</td></tr>'; return; }
+        
+        if (transactions.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;">✨ Klik "Tambah di Atas" untuk memulai ✨</td></tr>';
+            return;
+        }
+        
         let html = '';
+        const totalIncome = getTotalIncome();
+        
         for (let i = 0; i < transactions.length; i++) {
             const t = transactions[i];
+            const percent = (t.type === 'Pengeluaran' && totalIncome > 0) ? Math.min(100, (t.amount / totalIncome) * 100) : 0;
+            const statusClass = getStatusClass(percent);
+            const displayPercent = Math.floor(percent);
+            
             html += `<tr data-idx="${i}">
                 <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
                 <td contenteditable="true" data-field="desc">${escapeHtml(t.desc || '')}</td>
-                <td contenteditable="true" data-field="category">${escapeHtml(t.category || '')}</td>
-                <td contenteditable="true" data-field="type">${escapeHtml(t.type || '')}</td>
-                <td contenteditable="true" data-field="amount">${formatRp(t.amount || 0)}</td>
-                <td class="action-icons"><i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i> <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i></td>
-            </table>`;
+                <td>
+                    <select data-field="type" data-idx="${i}" class="type-select">
+                        <option value="Pemasukan" ${t.type === 'Pemasukan' ? 'selected' : ''}>💰 Pemasukan</option>
+                        <option value="Pengeluaran" ${t.type === 'Pengeluaran' ? 'selected' : ''}>💸 Pengeluaran</option>
+                    </select>
+                </td>
+                <td contenteditable="true" data-field="amount">${formatNumberDot(t.amount || 0)}</td>
+                <td class="status-cell">
+                    <div class="status-bar-container" title="${displayPercent}% dari total pemasukan">
+                        <div class="status-bar-fill ${statusClass}" style="width: ${percent}%;">
+                            ${percent >= 25 ? displayPercent + '%' : ''}
+                        </div>
+                    </div>
+                </td>
+                <td class="action-icons">
+                    <i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i>
+                    <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i>
+                </td>
+             </tr>`;
         }
         tbody.innerHTML = html;
-        document.getElementById('tableBody')?.removeEventListener('blur', handleEdit);
+        
+        // Attach event listeners untuk dropdown
+        document.querySelectorAll('.type-select').forEach(select => {
+            select.addEventListener('change', (e) => {
+                const idx = parseInt(select.getAttribute('data-idx'));
+                if (!isNaN(idx) && transactions[idx]) {
+                    transactions[idx].type = select.value;
+                    refreshUI();
+                }
+            });
+        });
+        
+        // Attach edit events
         document.getElementById('tableBody')?.addEventListener('blur', handleEdit, true);
     }
     
-    function escapeHtml(s) { if (!s) return ''; return s.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+    function escapeHtml(s) { 
+        if (!s) return ''; 
+        return s.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); 
+    }
     
     function handleEdit(e) {
         const cell = e.target;
@@ -151,158 +621,203 @@
         if (isNaN(idx)) return;
         const field = cell.getAttribute('data-field');
         let val = cell.innerText.trim();
+        
         if (field === 'amount') {
-            let num = parseFloat(val.replace(/[^0-9.-]/g, ''));
+            let num = parseRp(val);
             transactions[idx].amount = isNaN(num) ? 0 : num;
         } else if (field === 'date') transactions[idx].date = val;
         else if (field === 'desc') transactions[idx].desc = val;
-        else if (field === 'category') transactions[idx].category = val;
-        else if (field === 'type') transactions[idx].type = val;
+        
         refreshUI();
     }
     
-    window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
-    window.duplicateTx = (i) => { transactions.push({ ...transactions[i] }); refreshUI(); };
+    window.deleteTx = (i) => { 
+        transactions.splice(i, 1); 
+        refreshUI(); 
+    };
     
+    window.duplicateTx = (i) => { 
+        transactions.splice(i, 0, { ...transactions[i] });
+        refreshUI(); 
+    };
+    
+    // ==================== UPDATE CHARTS ====================
     function updateCharts() {
+        // Pie chart (kategori pengeluaran)
         let pieMap = new Map();
-        for (let t of transactions) if (t.type === 'Pengeluaran' && t.category) pieMap.set(t.category, (pieMap.get(t.category)||0) + (t.amount||0));
-        const pieHash = JSON.stringify([...pieMap.entries()]);
-        let inc = 0, exp = 0;
         for (let t of transactions) {
-            if (t.type === 'Pemasukan') inc += t.amount || 0;
-            else if (t.type === 'Pengeluaran') exp += t.amount || 0;
+            if (t.type === 'Pengeluaran' && t.category) {
+                pieMap.set(t.category, (pieMap.get(t.category)||0) + (t.amount||0));
+            }
         }
-        const percent = Math.min(100, (inc / targetAmount) * 100);
-        const barHash = `${inc}|${exp}`;
-        const gaugeHash = `${percent}`;
+        // Fallback category
+        const pieLabels = [...pieMap.keys()];
+        const pieData = [...pieMap.values()];
         
-        if (pieHash !== chartCache.pie) {
-            const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
-            if (ctx) {
-                if (chartObjs.pie) chartObjs.pie.destroy();
-                chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: [...pieMap.keys()], datasets: [{ data: [...pieMap.values()], backgroundColor: ['#3bc9ff','#a970ff','#ffb347','#2dd4bf','#ff6b6b'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } }, animation: false } });
-                chartCache.pie = pieHash;
-            }
+        const { income, expense } = calcTotals();
+        const percent = Math.min(100, (income / targetAmount) * 100);
+        
+        // Pie Chart
+        const pieCtx = document.getElementById('categoryPieChart')?.getContext('2d');
+        if (pieCtx) {
+            if (chartObjs.pie) chartObjs.pie.destroy();
+            chartObjs.pie = new Chart(pieCtx, {
+                type: 'pie',
+                data: { labels: pieLabels.length ? pieLabels : ['Belum ada data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } }
+            });
         }
-        if (gaugeHash !== chartCache.gauge) {
-            const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
-            if (ctx) {
-                if (chartObjs.gauge) chartObjs.gauge.destroy();
-                chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } }, animation: false } });
-                chartCache.gauge = gaugeHash;
-            }
+        
+        // Gauge Chart
+        const gaugeCtx = document.getElementById('targetGaugeChart')?.getContext('2d');
+        if (gaugeCtx) {
+            if (chartObjs.gauge) chartObjs.gauge.destroy();
+            chartObjs.gauge = new Chart(gaugeCtx, {
+                type: 'doughnut',
+                data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } }
+            });
         }
-        if (barHash !== chartCache.bar) {
-            const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
-            if (ctx) {
-                if (chartObjs.bar) chartObjs.bar.destroy();
-                chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [inc, exp], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => v/1e6 + 'jt' } } }, plugins: { legend: { position: 'top' } }, animation: false } });
-                chartCache.bar = barHash;
-            }
+        
+        // Bar Chart
+        const barCtx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
+        if (barCtx) {
+            if (chartObjs.bar) chartObjs.bar.destroy();
+            chartObjs.bar = new Chart(barCtx, {
+                type: 'bar',
+                data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Jumlah (Rp)', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] },
+                options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt' } } }, plugins: { legend: { position: 'top' } } }
+            });
         }
     }
     
-    // ========== RENDER ONLY (TANPA SAVE KE FIREBASE) ==========
+    // ==================== RENDER UI ====================
     function renderOnly() {
         const { income, expense } = calcTotals();
         const balance = income - expense;
         const percent = Math.min(100, (income / targetAmount) * 100);
         
-        document.getElementById('totalIncome').innerText = formatRp(income);
-        document.getElementById('totalExpense').innerText = formatRp(expense);
-        document.getElementById('balance').innerText = formatRp(balance);
-        document.getElementById('targetPercent').innerText = Math.floor(percent) + '%';
-        document.getElementById('displayTarget').innerText = formatRp(targetAmount);
+        document.getElementById('totalIncome').innerHTML = formatRp(income);
+        document.getElementById('totalExpense').innerHTML = formatRp(expense);
+        document.getElementById('balance').innerHTML = formatRp(balance);
+        document.getElementById('targetPercent').innerHTML = Math.floor(percent) + '%';
+        document.getElementById('displayTarget').innerHTML = formatRp(targetAmount);
         
         const fill = document.getElementById('milestoneFill');
         fill.style.width = percent + '%';
         fill.innerText = Math.floor(percent) + '%';
-        document.getElementById('progressText').innerText = Math.floor(percent) + '%';
+        document.getElementById('progressText').innerHTML = Math.floor(percent) + '%';
         
+        const sisa = targetAmount - income;
         document.getElementById('cheerMessage').innerHTML = income >= targetAmount 
-            ? '🎉🎉 TARGET TERCAPAI! SELAMAT MENIKAH! 🎉🎉' 
-            : `💪 Butuh ${formatRp(targetAmount - income)} lagi ke target.`;
+            ? '🎉🎉 SELAMAT! TARGET TERCAPAI! LANGSUNG NIKAH! 🎉🎉' 
+            : `💪 Semangat! Butuh ${formatRp(sisa > 0 ? sisa : 0)} lagi ke target ${formatRp(targetAmount)}`;
         
         renderTable();
         updateCharts();
     }
     
-    // ========== REFRESH UI + SAVE KE FIREBASE ==========
     function refreshUI() {
-        if (refreshTimer) clearTimeout(refreshTimer);
-        refreshTimer = setTimeout(() => {
-            renderOnly();
-            if (!isSyncing) {
-                database.ref('weddingData').set({
-                    transactions,
-                    targetAmount,
-                    updated: Date.now()
-                }).catch(e => console.warn(e));
-            }
-        }, 50);
+        if (isSyncing) return;
+        renderOnly();
+        database.ref('weddingData').set({
+            transactions,
+            targetAmount,
+            updated: Date.now()
+        }).catch(e => console.warn(e));
     }
     
-    // ========== FIREBASE ==========
+    // ==================== FIREBASE ====================
     function loadFromFirebase() {
         isSyncing = true;
         database.ref('weddingData').once('value').then(snap => {
             const d = snap.val();
-            if (d?.transactions && Array.isArray(d.transactions)) { 
-                transactions = d.transactions; 
-                targetAmount = d.targetAmount || 75000000; 
-            } else { 
+            if (d?.transactions && Array.isArray(d.transactions)) {
+                transactions = d.transactions;
+                targetAmount = d.targetAmount || 75000000;
+            } else {
+                // Data default
                 transactions = [
-                    { date: "2025-05-01", desc: "Gaji", category: "Pendapatan", type: "Pemasukan", amount: 20000000 }, 
-                    { date: "2025-05-03", desc: "DP Venue", category: "Venue", type: "Pengeluaran", amount: 8000000 }
-                ]; 
-                targetAmount = 75000000; 
+                    { date: "2025-05-01", desc: "Gaji + Bonus", type: "Pemasukan", amount: 25000000 },
+                    { date: "2025-05-03", desc: "DP Venue", type: "Pengeluaran", amount: 8000000, category: "Venue" },
+                    { date: "2025-05-07", desc: "Catering", type: "Pengeluaran", amount: 5000000, category: "Konsumsi" }
+                ];
+                targetAmount = 75000000;
             }
             isSyncing = false;
-            renderOnly();  // ✅ Pakai renderOnly, bukan refreshUI!
+            renderOnly();
         }).catch(() => { isSyncing = false; renderOnly(); });
     }
     
-    function listenRealtime() { 
-        database.ref('weddingData').on('value', snap => { 
-            if (!isSyncing) { 
-                const d = snap.val(); 
-                if (d?.transactions && Array.isArray(d.transactions)) { 
-                    transactions = d.transactions; 
-                    targetAmount = d.targetAmount || 75000000; 
-                    renderOnly();  // ✅ Pakai renderOnly, BUKAN refreshUI!
-                } 
-            } 
-        }); 
+    function listenRealtime() {
+        database.ref('weddingData').on('value', snap => {
+            if (!isSyncing) {
+                const d = snap.val();
+                if (d?.transactions && Array.isArray(d.transactions)) {
+                    transactions = d.transactions;
+                    targetAmount = d.targetAmount || 75000000;
+                    renderOnly();
+                }
+            }
+        });
     }
     
-    // ========== EVENT LISTENERS ==========
-    document.getElementById('addRowBtn')?.addEventListener('click', () => { 
-        transactions.push({ date: new Date().toISOString().slice(0,10), desc: "Baru", category: "Lainnya", type: "Pengeluaran", amount: 0 }); 
-        refreshUI(); 
-    });
-    document.getElementById('exportExcelBtn')?.addEventListener('click', () => { 
-        const ws = XLSX.utils.aoa_to_sheet([["Tanggal","Deskripsi","Kategori","Tipe","Jumlah"], ...transactions.map(t => [t.date, t.desc, t.category, t.type, t.amount])]); 
-        const wb = XLSX.utils.book_new(); 
-        XLSX.utils.book_append_sheet(wb, ws, "Wedding"); 
-        XLSX.writeFile(wb, `wedding_${new Date().toISOString().slice(0,10)}.xlsx`); 
-    });
-    document.getElementById('resetSampleBtn')?.addEventListener('click', () => { 
-        transactions = [
-            { date: "2025-05-01", desc: "Gaji", category: "Pendapatan", type: "Pemasukan", amount: 25000000 }, 
-            { date: "2025-05-05", desc: "Catering", category: "Konsumsi", type: "Pengeluaran", amount: 7000000 }
-        ]; 
-        targetAmount = 75000000; 
-        refreshUI(); 
-    });
-    document.getElementById('updateTargetBtn')?.addEventListener('click', () => { 
-        let v = parseFloat(document.getElementById('targetInput').value); 
-        if (!isNaN(v) && v > 0) targetAmount = v; 
-        refreshUI(); 
+    // ==================== EVENT LISTENERS ====================
+    document.getElementById('addRowBtn')?.addEventListener('click', () => {
+        transactions.unshift({ 
+            date: new Date().toISOString().slice(0,10), 
+            desc: "Deskripsi baru", 
+            type: "Pengeluaran", 
+            amount: 0,
+            category: "Lainnya"
+        });
+        refreshUI();
     });
     
-    // ========== START ==========
-    loadFromFirebase(); 
+    document.getElementById('exportExcelBtn')?.addEventListener('click', () => {
+        const totalIncome = getTotalIncome();
+        const exportData = transactions.map(t => {
+            let percent = 0;
+            if (t.type === 'Pengeluaran' && totalIncome > 0) {
+                percent = Math.min(100, (t.amount / totalIncome) * 100);
+            }
+            return [
+                t.date || '',
+                t.desc || '',
+                t.type || '',
+                t.amount || 0,
+                Math.floor(percent) + '%'
+            ];
+        });
+        
+        const ws = XLSX.utils.aoa_to_sheet([
+            ["Tanggal", "Deskripsi", "Tipe", "Jumlah", "Status (%)"],
+            ...exportData
+        ]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "WeddingBudget");
+        XLSX.writeFile(wb, `wedding_budget_${new Date().toISOString().slice(0,10)}.xlsx`);
+    });
+    
+    document.getElementById('clearAllBtn')?.addEventListener('click', () => {
+        if (confirm('⚠️ Yakin ingin menghapus SEMUA data? Data akan hilang permanen!')) {
+            transactions = [];
+            refreshUI();
+        }
+    });
+    
+    document.getElementById('updateTargetBtn')?.addEventListener('click', () => {
+        let v = parseFloat(document.getElementById('targetInput').value);
+        if (!isNaN(v) && v > 0) {
+            targetAmount = v;
+            refreshUI();
+        } else {
+            alert('Masukkan angka target yang valid!');
+        }
+    });
+    
+    // ==================== START ====================
+    loadFromFirebase();
     listenRealtime();
 </script>
 </body>
