@@ -3,270 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Wedding Budget Sync | Ringan & Cepat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Wedding Budget | Final Fix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0a0f1e;
-            color: #eef5ff;
-            padding: 12px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        
-        /* Header */
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #3bc9ff, #a970ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 12px;
-        }
-        
-        .target-card {
-            background: rgba(15, 25, 45, 0.95);
-            border-radius: 16px;
-            padding: 10px 14px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            border-left: 3px solid #2dd4bf;
-            margin-bottom: 16px;
-        }
-        
-        .target-card input {
-            background: #07131f;
-            border: 1px solid #2c4c6c;
-            padding: 8px 12px;
-            border-radius: 40px;
-            color: white;
-            flex: 1;
-            min-width: 100px;
-            font-size: 0.85rem;
-        }
-        
-        .btn-small {
-            background: #0e2a3b;
-            border: 1px solid #3bc9ff;
-            padding: 8px 16px;
-            border-radius: 40px;
-            color: white;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #eef5ff; padding: 12px; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+        h1 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #fff, #3bc9ff, #a970ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 12px; }
+        .target-card { background: rgba(15, 25, 45, 0.95); border-radius: 16px; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; border-left: 3px solid #2dd4bf; margin-bottom: 16px; }
+        .target-card input { background: #07131f; border: 1px solid #2c4c6c; padding: 8px 12px; border-radius: 40px; color: white; flex: 1; min-width: 100px; font-size: 0.85rem; }
+        .btn-small { background: #0e2a3b; border: 1px solid #3bc9ff; padding: 8px 16px; border-radius: 40px; color: white; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
         .btn-small:active { transform: scale(0.96); }
-        
-        /* KPI Cards - Grid 2x2 di HP */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        
-        .kpi-card {
-            background: rgba(8, 18, 32, 0.95);
-            border-radius: 14px;
-            padding: 10px;
-            border: 1px solid rgba(59, 201, 255, 0.25);
-        }
-        
-        .kpi-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            opacity: 0.7;
-            letter-spacing: 1px;
-        }
-        
-        .kpi-value {
-            font-size: 1.2rem;
-            font-weight: 800;
-            word-break: break-word;
-        }
-        
-        /* Charts - scroll horizontal ringan */
-        .charts-wrapper {
-            overflow-x: auto;
-            margin-bottom: 16px;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .charts-row {
-            display: flex;
-            gap: 12px;
-            min-width: min-content;
-        }
-        
-        .chart-box {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 16px;
-            padding: 10px;
-            width: 260px;
-            flex-shrink: 0;
-        }
-        
-        .chart-box h3 {
-            font-size: 0.75rem;
-            margin-bottom: 8px;
-        }
-        
-        .chart-box canvas {
-            max-height: 150px;
-            width: 100% !important;
-        }
-        
-        /* Progress Bar */
-        .progress-section {
-            background: rgba(7, 19, 31, 0.95);
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .progress-bar-bg {
-            background: #1a2c3e;
-            border-radius: 30px;
-            height: 22px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-        
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #2dd4bf, #3b82f6);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 8px;
-            font-size: 0.65rem;
-            font-weight: bold;
-        }
-        
-        /* Table - scroll horizontal */
-        .table-container {
-            overflow-x: auto;
-            border-radius: 14px;
-            margin-bottom: 16px;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .data-table {
-            width: 100%;
-            min-width: 550px;
-            border-collapse: collapse;
-            font-size: 0.7rem;
-        }
-        
-        .data-table th {
-            background: #0e1a2b;
-            padding: 10px 6px;
-            text-align: left;
-            font-weight: 600;
-            color: #aad0ff;
-        }
-        
-        .data-table td {
-            padding: 8px 6px;
-            border-bottom: 1px solid #2a3a4e;
-            background: rgba(10, 20, 35, 0.8);
-        }
-        
-        [contenteditable="true"] {
-            background: #0f212f;
-            border-radius: 6px;
-            padding: 4px 6px;
-            display: inline-block;
-            min-width: 50px;
-        }
-        
-        .action-icons i {
-            margin: 0 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        /* Buttons */
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        
-        .btn-futur {
-            background: #0e2a3b;
-            border: 1px solid #3bc9ff;
-            padding: 8px 14px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            font-size: 0.7rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
+        .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+        .kpi-card { background: rgba(8, 18, 32, 0.95); border-radius: 14px; padding: 10px; border: 1px solid rgba(59, 201, 255, 0.25); }
+        .kpi-label { font-size: 0.65rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; }
+        .kpi-value { font-size: 1.2rem; font-weight: 800; word-break: break-word; }
+        .charts-wrapper { overflow-x: auto; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
+        .charts-row { display: flex; gap: 12px; min-width: min-content; }
+        .chart-box { background: rgba(0, 0, 0, 0.5); border-radius: 16px; padding: 10px; width: 260px; flex-shrink: 0; }
+        .chart-box h3 { font-size: 0.75rem; margin-bottom: 8px; }
+        .chart-box canvas { max-height: 150px; width: 100% !important; }
+        .progress-section { background: rgba(7, 19, 31, 0.95); border-radius: 16px; padding: 12px; margin-bottom: 16px; }
+        .progress-bar-bg { background: #1a2c3e; border-radius: 30px; height: 22px; overflow: hidden; margin-top: 6px; }
+        .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #2dd4bf, #3b82f6); border-radius: 30px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.65rem; font-weight: bold; }
+        .table-container { overflow-x: auto; border-radius: 14px; margin-bottom: 16px; -webkit-overflow-scrolling: touch; }
+        .data-table { width: 100%; min-width: 550px; border-collapse: collapse; font-size: 0.7rem; }
+        .data-table th { background: #0e1a2b; padding: 10px 6px; text-align: left; font-weight: 600; color: #aad0ff; }
+        .data-table td { padding: 8px 6px; border-bottom: 1px solid #2a3a4e; background: rgba(10, 20, 35, 0.8); }
+        [contenteditable="true"] { background: #0f212f; border-radius: 6px; padding: 4px 6px; display: inline-block; min-width: 50px; }
+        .action-icons i { margin: 0 5px; cursor: pointer; font-size: 0.9rem; }
+        .button-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .btn-futur { background: #0e2a3b; border: 1px solid #3bc9ff; padding: 8px 14px; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 5px; }
         .btn-futur:active { transform: scale(0.96); }
-        
-        .sync-badge {
-            position: fixed;
-            bottom: 8px;
-            right: 8px;
-            background: #0a1f2c;
-            border-radius: 20px;
-            padding: 3px 8px;
-            font-size: 0.55rem;
-            border: 1px solid cyan;
-            z-index: 999;
-        }
-        
-        footer {
-            text-align: center;
-            font-size: 0.55rem;
-            opacity: 0.5;
-            margin-top: 16px;
-            margin-bottom: 30px;
-        }
-        
-        @media (min-width: 768px) {
-            .kpi-grid { grid-template-columns: repeat(4, 1fr); }
-            .chart-box { width: 320px; }
-            h1 { font-size: 1.8rem; }
-            .kpi-value { font-size: 1.5rem; }
-        }
+        .sync-badge { position: fixed; bottom: 8px; right: 8px; background: #0a1f2c; border-radius: 20px; padding: 3px 8px; font-size: 0.55rem; border: 1px solid cyan; z-index: 999; }
+        footer { text-align: center; font-size: 0.55rem; opacity: 0.5; margin-top: 16px; margin-bottom: 30px; }
+        @media (min-width: 768px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } .chart-box { width: 320px; } h1 { font-size: 1.8rem; } .kpi-value { font-size: 1.5rem; } }
     </style>
 </head>
 <body>
 <div class="container">
     <h1><i class="fas fa-chart-line"></i> Wedding Budget Sync</h1>
-    
     <div class="target-card">
         <i class="fas fa-bullseye" style="color:#2dd4bf"></i>
         <span style="font-size:0.75rem;">TARGET:</span>
@@ -274,14 +55,12 @@
         <input type="number" id="targetInput" placeholder="Target" value="75000000">
         <button class="btn-small" id="updateTargetBtn">Set</button>
     </div>
-    
     <div class="kpi-grid">
         <div class="kpi-card"><div class="kpi-label">💰 TERKUMPUL</div><div class="kpi-value" id="totalIncome">Rp 0</div></div>
         <div class="kpi-card"><div class="kpi-label">💸 TERPAKAI</div><div class="kpi-value" id="totalExpense">Rp 0</div></div>
         <div class="kpi-card"><div class="kpi-label">⚖️ SISA</div><div class="kpi-value" id="balance">Rp 0</div></div>
         <div class="kpi-card"><div class="kpi-label">🎯 CAPAI</div><div class="kpi-value" id="targetPercent">0%</div></div>
     </div>
-    
     <div class="charts-wrapper">
         <div class="charts-row">
             <div class="chart-box"><h3><i class="fas fa-chart-pie"></i> Kategori</h3><canvas id="categoryPieChart"></canvas></div>
@@ -289,25 +68,14 @@
             <div class="chart-box"><h3><i class="fas fa-chart-bar"></i> Pemasukan vs Pengeluaran</h3><canvas id="incomeExpenseBarChart"></canvas></div>
         </div>
     </div>
-    
     <div class="progress-section">
-        <div style="display: flex; justify-content: space-between;">
-            <span><i class="fas fa-flag-checkered"></i> PROGRESS KE TARGET</span>
-            <span id="progressText">0%</span>
-        </div>
+        <div style="display: flex; justify-content: space-between;"><span><i class="fas fa-flag-checkered"></i> PROGRESS KE TARGET</span><span id="progressText">0%</span></div>
         <div class="progress-bar-bg"><div class="progress-fill" id="milestoneFill">0%</div></div>
         <div id="cheerMessage" style="margin-top: 6px; font-size:0.7rem;"></div>
     </div>
-    
     <div class="table-container">
-        <table class="data-table" id="financeTable">
-            <thead>
-                <tr><th>Tanggal</th><th>Deskripsi</th><th>Kategori</th><th>Tipe</th><th>Jumlah (Rp)</th><th>Aksi</th></tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-        </table>
+        <table class="data-table"><thead><tr><th>Tanggal</th><th>Deskripsi</th><th>Kategori</th><th>Tipe</th><th>Jumlah (Rp)</th><th>Aksi</th></tr></thead><tbody id="tableBody"></tbody>}</table>
     </div>
-    
     <div class="button-group">
         <button class="btn-futur" id="addRowBtn"><i class="fas fa-plus"></i> Tambah</button>
         <button class="btn-futur" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Export</button>
@@ -333,303 +101,208 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // ---------- DATA ----------
     let transactions = [];
     let targetAmount = 75000000;
-    let isSyncing = false;  // Mencegah infinite loop
-    let chartInstances = { pie: null, gauge: null, bar: null };
-    let updateTimeout = null;
+    let isSyncing = false;
+    let refreshTimer = null;
+    let chartCache = { pie: '', gauge: '', bar: '' };
+    let chartObjs = { pie: null, gauge: null, bar: null };
     
-    // Helper
-    function formatRp(angka) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-    }
+    function formatRp(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n); }
     
     function calcTotals() {
-        let income = 0, expense = 0;
+        let inc = 0, exp = 0;
         for (let t of transactions) {
-            if (t.type === 'Pemasukan') income += t.amount || 0;
-            else if (t.type === 'Pengeluaran') expense += t.amount || 0;
+            if (t.type === 'Pemasukan') inc += t.amount || 0;
+            else if (t.type === 'Pengeluaran') exp += t.amount || 0;
         }
-        return { income, expense };
+        return { income: inc, expense: exp };
     }
     
-    // ---------- RENDER TABLE (Paling Ringan - pakai innerHTML) ----------
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         if (!tbody) return;
-        
-        if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">✨ Klik Tambah atau Reset Sample ✨</td></tr>';
-            return;
-        }
-        
+        if (transactions.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">✨ Klik Tambah atau Reset Sample ✨</td></tr>'; return; }
         let html = '';
         for (let i = 0; i < transactions.length; i++) {
             const t = transactions[i];
-            html += `
-                <tr data-idx="${i}">
-                    <td contenteditable="true" class="editable-date" data-field="date">${escapeHtml(t.date || '')}</td>
-                    <td contenteditable="true" class="editable-desc" data-field="desc">${escapeHtml(t.desc || '')}</td>
-                    <td contenteditable="true" class="editable-cat" data-field="category">${escapeHtml(t.category || '')}</td>
-                    <td contenteditable="true" class="editable-type" data-field="type">${escapeHtml(t.type || '')}</td>
-                    <td contenteditable="true" class="editable-amount" data-field="amount">${formatRp(t.amount || 0)}</td>
-                    <td class="action-icons">
-                        <i class="fas fa-trash-alt" onclick="window.deleteTransaction(${i})"></i>
-                        <i class="fas fa-copy" onclick="window.duplicateTransaction(${i})"></i>
-                    </td>
-                </tr>
-            `;
+            html += `<tr data-idx="${i}">
+                <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
+                <td contenteditable="true" data-field="desc">${escapeHtml(t.desc || '')}</td>
+                <td contenteditable="true" data-field="category">${escapeHtml(t.category || '')}</td>
+                <td contenteditable="true" data-field="type">${escapeHtml(t.type || '')}</td>
+                <td contenteditable="true" data-field="amount">${formatRp(t.amount || 0)}</td>
+                <td class="action-icons"><i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i> <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i></td>
+            </table>`;
         }
         tbody.innerHTML = html;
-        
-        // Attach event listeners dengan delegasi (lebih ringan)
-        attachEditableListeners();
+        document.getElementById('tableBody')?.removeEventListener('blur', handleEdit);
+        document.getElementById('tableBody')?.addEventListener('blur', handleEdit, true);
     }
     
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    function escapeHtml(s) { if (!s) return ''; return s.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
     
-    function attachEditableListeners() {
-        const tbody = document.getElementById('tableBody');
-        if (!tbody) return;
-        
-        // Hapus listener lama pake clone + replace (opsional, biar bersih)
-        // Tapi kita pake event delegation dari tbody aja
-        tbody.removeEventListener('blur', handleCellEdit, true);
-        tbody.addEventListener('blur', handleCellEdit, true);
-    }
-    
-    function handleCellEdit(e) {
+    function handleEdit(e) {
         const cell = e.target;
         if (!cell.isContentEditable) return;
-        
         const row = cell.closest('tr');
         if (!row) return;
         const idx = parseInt(row.getAttribute('data-idx'));
         if (isNaN(idx)) return;
-        
         const field = cell.getAttribute('data-field');
-        let newValue = cell.innerText.trim();
-        
+        let val = cell.innerText.trim();
         if (field === 'amount') {
-            let raw = newValue.replace(/[^0-9.-]/g, '');
-            let num = parseFloat(raw);
-            if (!isNaN(num)) {
-                transactions[idx].amount = num;
-            } else {
-                transactions[idx].amount = 0;
-            }
-        } else if (field === 'date') {
-            transactions[idx].date = newValue;
-        } else if (field === 'desc') {
-            transactions[idx].desc = newValue;
-        } else if (field === 'category') {
-            transactions[idx].category = newValue;
-        } else if (field === 'type') {
-            transactions[idx].type = newValue;
-        }
-        
+            let num = parseFloat(val.replace(/[^0-9.-]/g, ''));
+            transactions[idx].amount = isNaN(num) ? 0 : num;
+        } else if (field === 'date') transactions[idx].date = val;
+        else if (field === 'desc') transactions[idx].desc = val;
+        else if (field === 'category') transactions[idx].category = val;
+        else if (field === 'type') transactions[idx].type = val;
         refreshUI();
     }
     
-    window.deleteTransaction = (idx) => {
-        transactions.splice(idx, 1);
-        refreshUI();
-    };
+    window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
+    window.duplicateTx = (i) => { transactions.push({ ...transactions[i] }); refreshUI(); };
     
-    window.duplicateTransaction = (idx) => {
-        let copy = { ...transactions[idx] };
-        transactions.push(copy);
-        refreshUI();
-    };
-    
-    // ---------- CHART UPDATE (hanya rebuild jika perlu) ----------
     function updateCharts() {
-        // Pie chart (kategori pengeluaran)
-        let catMap = new Map();
+        let pieMap = new Map();
+        for (let t of transactions) if (t.type === 'Pengeluaran' && t.category) pieMap.set(t.category, (pieMap.get(t.category)||0) + (t.amount||0));
+        const pieHash = JSON.stringify([...pieMap.entries()]);
+        let inc = 0, exp = 0;
         for (let t of transactions) {
-            if (t.type === 'Pengeluaran' && t.category) {
-                let amt = t.amount || 0;
-                catMap.set(t.category, (catMap.get(t.category) || 0) + amt);
+            if (t.type === 'Pemasukan') inc += t.amount || 0;
+            else if (t.type === 'Pengeluaran') exp += t.amount || 0;
+        }
+        const percent = Math.min(100, (inc / targetAmount) * 100);
+        const barHash = `${inc}|${exp}`;
+        const gaugeHash = `${percent}`;
+        
+        if (pieHash !== chartCache.pie) {
+            const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
+            if (ctx) {
+                if (chartObjs.pie) chartObjs.pie.destroy();
+                chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: [...pieMap.keys()], datasets: [{ data: [...pieMap.values()], backgroundColor: ['#3bc9ff','#a970ff','#ffb347','#2dd4bf','#ff6b6b'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } }, animation: false } });
+                chartCache.pie = pieHash;
             }
         }
-        let pieLabels = Array.from(catMap.keys());
-        let pieData = Array.from(catMap.values());
-        
-        const pieCtx = document.getElementById('categoryPieChart')?.getContext('2d');
-        if (pieCtx) {
-            if (chartInstances.pie) chartInstances.pie.destroy();
-            chartInstances.pie = new Chart(pieCtx, {
-                type: 'pie',
-                data: { labels: pieLabels, datasets: [{ data: pieData, backgroundColor: ['#3bc9ff','#a970ff','#ffb347','#2dd4bf','#ff6b6b','#f3a683'] }] },
-                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } }
-            });
+        if (gaugeHash !== chartCache.gauge) {
+            const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
+            if (ctx) {
+                if (chartObjs.gauge) chartObjs.gauge.destroy();
+                chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } }, animation: false } });
+                chartCache.gauge = gaugeHash;
+            }
         }
-        
-        // Gauge chart
-        let income = 0;
-        for (let t of transactions) if (t.type === 'Pemasukan') income += t.amount || 0;
-        let percent = Math.min(100, (income / targetAmount) * 100);
-        
-        const gaugeCtx = document.getElementById('targetGaugeChart')?.getContext('2d');
-        if (gaugeCtx) {
-            if (chartInstances.gauge) chartInstances.gauge.destroy();
-            chartInstances.gauge = new Chart(gaugeCtx, {
-                type: 'doughnut',
-                data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100 - percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] },
-                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } }
-            });
-        }
-        
-        // Bar chart
-        let totalIncome = income;
-        let totalExpense = 0;
-        for (let t of transactions) if (t.type === 'Pengeluaran') totalExpense += t.amount || 0;
-        
-        const barCtx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
-        if (barCtx) {
-            if (chartInstances.bar) chartInstances.bar.destroy();
-            chartInstances.bar = new Chart(barCtx, {
-                type: 'bar',
-                data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [totalIncome, totalExpense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] },
-                options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => v / 1e6 + 'jt' } } }, plugins: { legend: { position: 'top' } } }
-            });
+        if (barHash !== chartCache.bar) {
+            const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
+            if (ctx) {
+                if (chartObjs.bar) chartObjs.bar.destroy();
+                chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [inc, exp], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => v/1e6 + 'jt' } } }, plugins: { legend: { position: 'top' } }, animation: false } });
+                chartCache.bar = barHash;
+            }
         }
     }
     
-    // ---------- UI REFRESH UTAMA (dengan debounce biar ga berlebihan) ----------
+    // ========== RENDER ONLY (TANPA SAVE KE FIREBASE) ==========
+    function renderOnly() {
+        const { income, expense } = calcTotals();
+        const balance = income - expense;
+        const percent = Math.min(100, (income / targetAmount) * 100);
+        
+        document.getElementById('totalIncome').innerText = formatRp(income);
+        document.getElementById('totalExpense').innerText = formatRp(expense);
+        document.getElementById('balance').innerText = formatRp(balance);
+        document.getElementById('targetPercent').innerText = Math.floor(percent) + '%';
+        document.getElementById('displayTarget').innerText = formatRp(targetAmount);
+        
+        const fill = document.getElementById('milestoneFill');
+        fill.style.width = percent + '%';
+        fill.innerText = Math.floor(percent) + '%';
+        document.getElementById('progressText').innerText = Math.floor(percent) + '%';
+        
+        document.getElementById('cheerMessage').innerHTML = income >= targetAmount 
+            ? '🎉🎉 TARGET TERCAPAI! SELAMAT MENIKAH! 🎉🎉' 
+            : `💪 Butuh ${formatRp(targetAmount - income)} lagi ke target.`;
+        
+        renderTable();
+        updateCharts();
+    }
+    
+    // ========== REFRESH UI + SAVE KE FIREBASE ==========
     function refreshUI() {
-        if (updateTimeout) clearTimeout(updateTimeout);
-        updateTimeout = setTimeout(() => {
-            const { income, expense } = calcTotals();
-            const balance = income - expense;
-            const percent = Math.min(100, (income / targetAmount) * 100);
-            
-            // Update DOM elements
-            document.getElementById('totalIncome').innerText = formatRp(income);
-            document.getElementById('totalExpense').innerText = formatRp(expense);
-            document.getElementById('balance').innerText = formatRp(balance);
-            document.getElementById('targetPercent').innerText = Math.floor(percent) + '%';
-            document.getElementById('displayTarget').innerText = formatRp(targetAmount);
-            
-            const fill = document.getElementById('milestoneFill');
-            fill.style.width = percent + '%';
-            fill.innerText = Math.floor(percent) + '%';
-            document.getElementById('progressText').innerText = Math.floor(percent) + '%';
-            
-            const cheer = document.getElementById('cheerMessage');
-            if (income >= targetAmount) cheer.innerHTML = '🎉🎉 TARGET TERCAPAI! SELAMAT MENIKAH! 🎉🎉';
-            else cheer.innerHTML = `💪 Butuh ${formatRp(targetAmount - income)} lagi ke target.`;
-            
-            renderTable();
-            updateCharts();
-            
-            // Simpan ke Firebase (tapi hindari infinite loop)
-            saveToFirebase();
-        }, 10);
+        if (refreshTimer) clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(() => {
+            renderOnly();
+            if (!isSyncing) {
+                database.ref('weddingData').set({
+                    transactions,
+                    targetAmount,
+                    updated: Date.now()
+                }).catch(e => console.warn(e));
+            }
+        }, 50);
     }
     
-    // ---------- FIREBASE  ----------
-    function saveToFirebase() {
-        if (isSyncing) return;
-        database.ref('weddingData').set({
-            transactions: transactions,
-            targetAmount: targetAmount,
-            updated: Date.now()
-        }).catch(e => console.warn("Save error:", e));
-    }
-    
+    // ========== FIREBASE ==========
     function loadFromFirebase() {
         isSyncing = true;
         database.ref('weddingData').once('value').then(snap => {
-            const data = snap.val();
-            if (data && data.transactions && Array.isArray(data.transactions)) {
-                transactions = data.transactions;
-                targetAmount = data.targetAmount || 75000000;
-            } else {
-                // Data kosong - set sample
+            const d = snap.val();
+            if (d?.transactions && Array.isArray(d.transactions)) { 
+                transactions = d.transactions; 
+                targetAmount = d.targetAmount || 75000000; 
+            } else { 
                 transactions = [
-                    { date: "2025-05-01", desc: "Gaji", category: "Pendapatan", type: "Pemasukan", amount: 20000000 },
-                    { date: "2025-05-03", desc: "DP Venue", category: "Venue", type: "Pengeluaran", amount: 8000000 },
-                    { date: "2025-05-10", desc: "Fotografer", category: "Dokumentasi", type: "Pengeluaran", amount: 5000000 }
-                ];
-                targetAmount = 75000000;
+                    { date: "2025-05-01", desc: "Gaji", category: "Pendapatan", type: "Pemasukan", amount: 20000000 }, 
+                    { date: "2025-05-03", desc: "DP Venue", category: "Venue", type: "Pengeluaran", amount: 8000000 }
+                ]; 
+                targetAmount = 75000000; 
             }
             isSyncing = false;
-            refreshUI();
-        }).catch(err => {
-            console.warn("Load error:", err);
-            isSyncing = false;
-            refreshUI();
-        });
+            renderOnly();  // ✅ Pakai renderOnly, bukan refreshUI!
+        }).catch(() => { isSyncing = false; renderOnly(); });
     }
     
-    function listenRealtime() {
-        database.ref('weddingData').on('value', snap => {
-            if (isSyncing) return;
-            const data = snap.val();
-            if (data && data.transactions && Array.isArray(data.transactions)) {
-                transactions = data.transactions;
-                targetAmount = data.targetAmount || 75000000;
-                refreshUI();
-            }
-        });
+    function listenRealtime() { 
+        database.ref('weddingData').on('value', snap => { 
+            if (!isSyncing) { 
+                const d = snap.val(); 
+                if (d?.transactions && Array.isArray(d.transactions)) { 
+                    transactions = d.transactions; 
+                    targetAmount = d.targetAmount || 75000000; 
+                    renderOnly();  // ✅ Pakai renderOnly, BUKAN refreshUI!
+                } 
+            } 
+        }); 
     }
     
-    // ---------- ACTIONS ----------
-    function addNewRow() {
-        transactions.push({
-            date: new Date().toISOString().slice(0, 10),
-            desc: "Baru",
-            category: "Lainnya",
-            type: "Pengeluaran",
-            amount: 0
-        });
-        refreshUI();
-    }
-    
-    function resetSample() {
+    // ========== EVENT LISTENERS ==========
+    document.getElementById('addRowBtn')?.addEventListener('click', () => { 
+        transactions.push({ date: new Date().toISOString().slice(0,10), desc: "Baru", category: "Lainnya", type: "Pengeluaran", amount: 0 }); 
+        refreshUI(); 
+    });
+    document.getElementById('exportExcelBtn')?.addEventListener('click', () => { 
+        const ws = XLSX.utils.aoa_to_sheet([["Tanggal","Deskripsi","Kategori","Tipe","Jumlah"], ...transactions.map(t => [t.date, t.desc, t.category, t.type, t.amount])]); 
+        const wb = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(wb, ws, "Wedding"); 
+        XLSX.writeFile(wb, `wedding_${new Date().toISOString().slice(0,10)}.xlsx`); 
+    });
+    document.getElementById('resetSampleBtn')?.addEventListener('click', () => { 
         transactions = [
-            { date: "2025-05-01", desc: "Gaji + Bonus", category: "Pendapatan", type: "Pemasukan", amount: 25000000 },
-            { date: "2025-05-05", desc: "Catering", category: "Konsumsi", type: "Pengeluaran", amount: 7000000 },
-            { date: "2025-05-08", desc: "Dekorasi", category: "Dekorasi", type: "Pengeluaran", amount: 5000000 },
-            { date: "2025-05-12", desc: "Jual Online", category: "Pendapatan", type: "Pemasukan", amount: 3000000 }
-        ];
-        targetAmount = 75000000;
-        refreshUI();
-    }
-    
-    function exportToExcel() {
-        const wsData = [["Tanggal", "Deskripsi", "Kategori", "Tipe", "Jumlah"]];
-        for (let t of transactions) {
-            wsData.push([t.date || '', t.desc || '', t.category || '', t.type || '', t.amount || 0]);
-        }
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(wsData);
-        XLSX.utils.book_append_sheet(wb, ws, "WeddingBudget");
-        XLSX.writeFile(wb, `wedding_${new Date().toISOString().slice(0, 10)}.xlsx`);
-    }
-    
-    // ---------- EVENT LISTENERS ----------
-    document.getElementById('addRowBtn')?.addEventListener('click', addNewRow);
-    document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
-    document.getElementById('resetSampleBtn')?.addEventListener('click', resetSample);
-    document.getElementById('updateTargetBtn')?.addEventListener('click', () => {
-        const newTarget = parseFloat(document.getElementById('targetInput').value);
-        if (!isNaN(newTarget) && newTarget > 0) targetAmount = newTarget;
-        refreshUI();
+            { date: "2025-05-01", desc: "Gaji", category: "Pendapatan", type: "Pemasukan", amount: 25000000 }, 
+            { date: "2025-05-05", desc: "Catering", category: "Konsumsi", type: "Pengeluaran", amount: 7000000 }
+        ]; 
+        targetAmount = 75000000; 
+        refreshUI(); 
+    });
+    document.getElementById('updateTargetBtn')?.addEventListener('click', () => { 
+        let v = parseFloat(document.getElementById('targetInput').value); 
+        if (!isNaN(v) && v > 0) targetAmount = v; 
+        refreshUI(); 
     });
     
-    // ---------- START ----------
-    loadFromFirebase();
+    // ========== START ==========
+    loadFromFirebase(); 
     listenRealtime();
 </script>
 </body>
