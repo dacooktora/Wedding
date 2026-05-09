@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Wedding Budget </title>
+    <title>Wedding Budget | Resa & Delia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -124,7 +124,6 @@
             color: transparent;
         }
 
-        /* GRID CHART - PAKAI KOTAK! */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -132,7 +131,6 @@
             margin-bottom: 20px;
         }
 
-        /* SETIAP CHART CARD HARUS KOTAK, TIDAK MELEBAR */
         .chart-card {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
@@ -150,13 +148,11 @@
             color: #aad0ff;
         }
 
-        /* CHART LAIN (PIE, GAUGE, BAR) - NORMAL */
         .chart-card canvas:not(.scrollable-chart-inner canvas) {
             max-height: 160px;
             width: 100% !important;
         }
 
-        /* SCROLLABLE CHART - VIEWPORT KECIL, ISI BISA DIGESER */
         .scrollable-chart {
             width: 100%;
             overflow-x: auto;
@@ -164,7 +160,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* SCROLLBAR CANTIK */
         .scrollable-chart::-webkit-scrollbar {
             height: 6px;
         }
@@ -179,9 +174,8 @@
             border-radius: 10px;
         }
 
-        /* INI PALING PENTING: VIEWPORT KECIL, CANVAS TETAP LEBAR */
         .scrollable-chart-inner {
-            width: 1000px;  /* Canvas tetap lebar muat semua kategori */
+            width: 1000px;
             height: 180px;
             position: relative;
         }
@@ -191,7 +185,6 @@
             height: 100% !important;
         }
 
-        /* RESPONSIVE: HP lebih kecil viewport-nya */
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -204,7 +197,6 @@
             .kpi-value {
                 font-size: 1rem;
             }
-            /* HP: viewport lebih kecil, cuma nampilin ~4 batang */
             .scrollable-chart-inner {
                 width: 750px;
                 height: 160px;
@@ -215,13 +207,6 @@
             .scrollable-chart-inner {
                 width: 850px;
                 height: 170px;
-            }
-        }
-
-        @media (min-width: 1025px) {
-            .scrollable-chart-inner {
-                width: 1000px;
-                height: 180px;
             }
         }
 
@@ -255,7 +240,6 @@
             transition: width 0.3s;
         }
 
-        /* Info Section */
         .info-section {
             background: rgba(7, 19, 31, 0.7);
             backdrop-filter: blur(10px);
@@ -352,7 +336,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -405,7 +388,6 @@
         .btn-cancel { background: #475569; color: white; }
         .btn-delete { background: #ef4444; color: white; }
 
-        /* Tabel */
         .table-container {
             overflow-x: auto;
             border-radius: 16px;
@@ -565,7 +547,6 @@
         <div class="kpi-card"><div class="kpi-label">🎯 CAPAIAN</div><div class="kpi-value" id="targetPercent">0%</div></div>
     </div>
 
-    <!-- 4 CHART GRID - SEMUA KOTAK -->
     <div class="charts-grid">
         <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Kategori Pengeluaran</h3><canvas id="categoryPieChart"></canvas></div>
         <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Target Nikah</h3><canvas id="targetGaugeChart"></canvas></div>
@@ -589,7 +570,6 @@
         <div id="cheerMessage" style="margin-top:6px; font-size:0.7rem;"></div>
     </div>
 
-    <!-- SECTION INFORMASI -->
     <div class="info-section">
         <div class="info-title">
             <i class="fas fa-clipboard-list"></i> INFORMASI ANGGARAN PER KATEGORI
@@ -597,7 +577,6 @@
         <div class="categories-grid" id="categoriesGrid"></div>
     </div>
 
-    <!-- TABEL -->
     <div class="table-container">
         <table class="data-table">
             <thead>
@@ -627,6 +606,7 @@
         </div>
     </div>
 </div>
+
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyDE1rDGnRJ-S38Qsu7lTUYKUG1fzJhWpRc",
@@ -674,7 +654,6 @@
         { name: "Tabungan", defaultBudget: 5000000 }
     ];
     
-    // Emoji map untuk dropdown kategori
     const emojiMap = {
         "Prewedding": "📸", "Cincin Kawin": "💍", "Mahar": "💰", "Seserahan": "🎁",
         "Box Seserahan": "📦", "Souvenir": "🎁", "Buku Tamu": "📖", "KUA": "🕌",
@@ -700,54 +679,53 @@
     }
     
     function renderInfoSection() {
-    const container = document.getElementById('categoriesGrid');
-    if (!container) return;
-    const realPerCat = getRealizationPerCategory();
-    
-    // FILTER: exclude Gaji dan Tabungan (yang bukan kategori nikah)
-    const weddingCategories = categoriesList.filter(cat => cat.name !== "Gaji" && cat.name !== "Tabungan");
-    
-    let html = '';
-    for (let cat of weddingCategories) {
-        const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
-        const real = realPerCat[cat.name] || 0;
-        const note = categoryNotes[cat.name] || '';
-        const notePreview = note.length > 40 ? note.substring(0, 40) + '...' : note;
-        const emoji = emojiMap[cat.name] || "📌";
+        const container = document.getElementById('categoriesGrid');
+        if (!container) return;
+        const realPerCat = getRealizationPerCategory();
         
-        html += `
-            <div class="category-item" data-category="${cat.name}">
-                <div class="category-main">
-                    <div class="category-icon">${emoji}</div>
-                    <div class="category-name">${cat.name}</div>
-                    <div class="category-real">${formatRp(real)}</div>
-                    <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
-                    <button class="category-note-btn" data-category="${cat.name}" title="Catatan"><i class="fas fa-edit"></i></button>
+        const weddingCategories = categoriesList.filter(cat => cat.name !== "Gaji" && cat.name !== "Tabungan");
+        
+        let html = '';
+        for (let cat of weddingCategories) {
+            const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
+            const real = realPerCat[cat.name] || 0;
+            const note = categoryNotes[cat.name] || '';
+            const notePreview = note.length > 40 ? note.substring(0, 40) + '...' : note;
+            const emoji = emojiMap[cat.name] || "📌";
+            
+            html += `
+                <div class="category-item" data-category="${cat.name}">
+                    <div class="category-main">
+                        <div class="category-icon">${emoji}</div>
+                        <div class="category-name">${cat.name}</div>
+                        <div class="category-real">${formatRp(real)}</div>
+                        <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
+                        <button class="category-note-btn" data-category="${cat.name}" title="Catatan"><i class="fas fa-edit"></i></button>
+                    </div>
+                    ${note ? `<div class="category-note-preview"><i class="fas fa-quote-left"></i> ${escapeHtml(notePreview)}</div>` : ''}
                 </div>
-                ${note ? `<div class="category-note-preview"><i class="fas fa-quote-left"></i> ${escapeHtml(notePreview)}</div>` : ''}
-            </div>
-        `;
-    }
-    container.innerHTML = html;
-    
-    document.querySelectorAll('.category-budget-input').forEach(input => {
-        input.addEventListener('change', (e) => {
-            e.stopPropagation();
-            const catName = input.getAttribute('data-category');
-            let val = parseFloat(input.value);
-            if (!isNaN(val) && val >= 0) categoryBudgets[catName] = val;
-            else categoryBudgets[catName] = 0;
-            refreshUI();
+            `;
+        }
+        container.innerHTML = html;
+        
+        document.querySelectorAll('.category-budget-input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                e.stopPropagation();
+                const catName = input.getAttribute('data-category');
+                let val = parseFloat(input.value);
+                if (!isNaN(val) && val >= 0) categoryBudgets[catName] = val;
+                else categoryBudgets[catName] = 0;
+                refreshUI();
+            });
         });
-    });
-    
-    document.querySelectorAll('.category-note-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const catName = btn.getAttribute('data-category');
-            openNoteModal(catName);
+        
+        document.querySelectorAll('.category-note-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const catName = btn.getAttribute('data-category');
+                openNoteModal(catName);
+            });
         });
-    });
     }
     
     function openNoteModal(categoryName) {
@@ -758,6 +736,7 @@
     }
     
     function closeNoteModal() { document.getElementById('noteModal').style.display = 'none'; currentCategoryForModal = null; }
+    
     function saveNote() {
         if (currentCategoryForModal) {
             const note = document.getElementById('noteText').value;
@@ -767,6 +746,7 @@
         }
         closeNoteModal();
     }
+    
     function deleteNote() {
         if (currentCategoryForModal) delete categoryNotes[currentCategoryForModal];
         refreshUI();
@@ -777,7 +757,7 @@
         const tbody = document.getElementById('tableBody');
         if (!tbody) return;
         if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">✨ Klik "Tambah di Atas" ✨✨ Pastikan anda sudah isi budget di kategori informasi ✨</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">✨ Klik "Tambah di Atas" ✨ Pastikan anda sudah isi budget di kategori informasi ✨</td></tr>';
             return;
         }
         
@@ -791,8 +771,6 @@
             else if (percent >= 76) statusClass = 'level-76-99';
             else if (percent >= 51) statusClass = 'level-51-75';
             else if (percent >= 26) statusClass = 'level-26-50';
-            
-            const emoji = emojiMap[t.category] || "📌";
             
             html += `<tr data-idx="${i}">
                 <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
@@ -819,7 +797,7 @@
                     <i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i>
                     <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i>
                 </td>
-             </tr>`;
+            </tr>`;
         }
         tbody.innerHTML = html;
         
@@ -866,13 +844,122 @@
     window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
     window.duplicateTx = (i) => { transactions.splice(i, 0, { ...transactions[i] }); refreshUI(); };
     
+    function updatePieChart() {
+        let pieData = [], pieLabels = [];
+        for (let t of transactions) {
+            if (t.type === 'Pengeluaran' && t.category) {
+                const idx = pieLabels.indexOf(t.category);
+                if (idx >= 0) {
+                    pieData[idx] += t.amount;
+                } else {
+                    pieLabels.push(t.category);
+                    pieData.push(t.amount);
+                }
+            }
+        }
+        const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
+        if (ctx) {
+            if (chartObjs.pie) chartObjs.pie.destroy();
+            chartObjs.pie = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: pieLabels.length ? pieLabels : ['Belum data'],
+                    datasets: [{
+                        data: pieData.length ? pieData : [1],
+                        backgroundColor: ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 9 } }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    
+    function updateGaugeChart() {
+        const { income } = calcTotals();
+        const percent = Math.min(100, (income / targetAmount) * 100);
+        const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
+        if (ctx) {
+            if (chartObjs.gauge) chartObjs.gauge.destroy();
+            chartObjs.gauge = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Tercapai', 'Sisa'],
+                    datasets: [{
+                        data: [percent, 100 - percent],
+                        backgroundColor: ['#2dd4bf', '#2c3e56'],
+                        cutout: '65%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 9 } }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    
+    function updateBarChart() {
+        const { income, expense } = calcTotals();
+        const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
+        if (ctx) {
+            if (chartObjs.bar) chartObjs.bar.destroy();
+            chartObjs.bar = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pemasukan', 'Pengeluaran'],
+                    datasets: [{
+                        label: 'Rp',
+                        data: [income, expense],
+                        backgroundColor: ['#3bc9ff', '#ff6b6b'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: v => (v / 1e6).toFixed(0) + 'jt',
+                                font: { size: 9 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { font: { size: 9 } }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    
     function updateRemainingChart() {
         const realPerCat = getRealizationPerCategory();
         let remainingLabels = [], remainingData = [], backgroundColors = [];
         const colorPalette = ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981', '#f472b6', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#ef4444', '#14b8a6', '#d946ef', '#f97316', '#6366f1', '#eab308', '#a855f7', '#22c55e', '#0ea5e9', '#9333ea', '#e11d48'];
         
-        for (let i = 0; i < categoriesList.length; i++) {
-            const cat = categoriesList[i];
+        const weddingCategories = categoriesList.filter(cat => cat.name !== "Gaji" && cat.name !== "Tabungan");
+        
+        for (let i = 0; i < weddingCategories.length; i++) {
+            const cat = weddingCategories[i];
             const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
             const real = realPerCat[cat.name] || 0;
             const remaining = Math.max(0, budget - real);
@@ -886,55 +973,46 @@
             if (chartObjs.remaining) chartObjs.remaining.destroy();
             chartObjs.remaining = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: remainingLabels, datasets: [{ label: 'Sisa Anggaran (Rp)', data: remainingData, backgroundColor: backgroundColors, borderRadius: 6 }] },
+                data: {
+                    labels: remainingLabels,
+                    datasets: [{
+                        label: 'Sisa Anggaran (Rp)',
+                        data: remainingData,
+                        backgroundColor: backgroundColors,
+                        borderRadius: 6
+                    }]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { position: 'top', labels: { font: { size: 9 } } }, 
-                        tooltip: { callbacks: { label: (ctx) => `Sisa: ${formatRp(ctx.raw)}` } }
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { font: { size: 9 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => `Sisa: ${formatRp(ctx.raw)}`
+                            }
+                        }
                     },
-                    scales: { 
-                        x: { ticks: { rotation: -45, autoSkip: false, font: { size: 9 } } },
-                        y: { ticks: { callback: v => (v / 1e6).toFixed(0) + 'jt', font: { size: 9 } } }
+                    scales: {
+                        x: {
+                            ticks: {
+                                rotation: -45,
+                                autoSkip: false,
+                                font: { size: 9 }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                callback: v => (v / 1e6).toFixed(0) + 'jt',
+                                font: { size: 9 }
+                            }
+                        }
                     }
                 }
             });
-        }
-    }
-    
-    function updatePieChart() {
-        let pieData = [], pieLabels = [];
-        for (let t of transactions) {
-            if (t.type === 'Pengeluaran' && t.category) {
-                const idx = pieLabels.indexOf(t.category);
-                if (idx >= 0) pieData[idx] += t.amount;
-                else { pieLabels.push(t.category); pieData.push(t.amount); }
-            }
-        }
-        const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
-        if (ctx) {
-            if (chartObjs.pie) chartObjs.pie.destroy();
-            chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } });
-        }
-    }
-    
-    function updateGaugeChart() {
-        const { income } = calcTotals();
-        const percent = Math.min(100, (income / targetAmount) * 100);
-        const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
-        if (ctx) {
-            if (chartObjs.gauge) chartObjs.gauge.destroy();
-            chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } });
-        }
-    }
-    
-    function updateBarChart() {
-        const { income, expense } = calcTotals();
-        const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
-        if (ctx) {
-            if (chartObjs.bar) chartObjs.bar.destroy();
-            chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt', font: { size: 9 } } } }, plugins: { legend: { position: 'top', labels: { font: { size: 9 } } } } });
         }
     }
     
@@ -984,29 +1062,55 @@
         isSyncing = true;
         database.ref('weddingData').once('value').then(snap => {
             const d = snap.val();
-            if (d?.transactions) transactions = d.transactions;
-            if (d?.targetAmount) targetAmount = d.targetAmount;
-            if (d?.categoryBudgets) categoryBudgets = d.categoryBudgets;
-            if (d?.categoryNotes) categoryNotes = d.categoryNotes;
+            if (d?.transactions && d.transactions.length > 0) {
+                transactions = d.transactions;
+                targetAmount = d.targetAmount || 75000000;
+                categoryBudgets = d.categoryBudgets || {};
+                categoryNotes = d.categoryNotes || {};
+            } else {
+                transactions = [
+                    { date: new Date().toISOString().slice(0,10), category: "Gaji", type: "Pemasukan", amount: 25000000 },
+                    { date: new Date().toISOString().slice(0,10), category: "Dekorasi", type: "Pengeluaran", amount: 5000000 },
+                    { date: new Date().toISOString().slice(0,10), category: "Catering", type: "Pengeluaran", amount: 3000000 }
+                ];
+                targetAmount = 75000000;
+                categoryBudgets = {};
+                categoryNotes = {};
+                for (let cat of categoriesList) {
+                    categoryBudgets[cat.name] = cat.defaultBudget;
+                }
+            }
             for (let cat of categoriesList) {
                 if (categoryBudgets[cat.name] === undefined) categoryBudgets[cat.name] = cat.defaultBudget;
             }
-            if (!transactions.length) {
-                transactions = [
-                    { date: new Date().toISOString().slice(0,10), category: "Prewedding", type: "Pemasukan", amount: 25000000 },
-                    { date: new Date().toISOString().slice(0,10), category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
-                ];
+            isSyncing = false;
+            renderOnly();
+        }).catch(err => {
+            console.log("Firebase error, pakai sample data:", err);
+            transactions = [
+                { date: new Date().toISOString().slice(0,10), category: "Gaji", type: "Pemasukan", amount: 25000000 },
+                { date: new Date().toISOString().slice(0,10), category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
+            ];
+            targetAmount = 75000000;
+            for (let cat of categoriesList) {
+                if (categoryBudgets[cat.name] === undefined) categoryBudgets[cat.name] = cat.defaultBudget;
             }
             isSyncing = false;
             renderOnly();
-        }).catch(() => { isSyncing = false; renderOnly(); });
+        });
     }
     
     function listenRealtime() {
         database.ref('weddingData').on('value', snap => {
             if (!isSyncing) {
                 const d = snap.val();
-                if (d?.transactions) { transactions = d.transactions; targetAmount = d.targetAmount || 75000000; categoryBudgets = d.categoryBudgets || {}; categoryNotes = d.categoryNotes || {}; renderOnly(); }
+                if (d?.transactions) {
+                    transactions = d.transactions;
+                    targetAmount = d.targetAmount || 75000000;
+                    categoryBudgets = d.categoryBudgets || {};
+                    categoryNotes = d.categoryNotes || {};
+                    renderOnly();
+                }
             }
         });
     }
@@ -1015,6 +1119,7 @@
         transactions.unshift({ date: new Date().toISOString().slice(0,10), category: "Prewedding", type: "Pengeluaran", amount: 0 });
         refreshUI();
     });
+    
     document.getElementById('exportExcelBtn')?.addEventListener('click', () => {
         const exportData = transactions.map(t => [t.date, t.category, t.type, t.amount || 0]);
         const ws = XLSX.utils.aoa_to_sheet([["Tanggal","Kategori","Tipe","Jumlah"], ...exportData]);
@@ -1022,9 +1127,14 @@
         XLSX.utils.book_append_sheet(wb, ws, "WeddingBudget");
         XLSX.writeFile(wb, `wedding_${new Date().toISOString().slice(0,10)}.xlsx`);
     });
+    
     document.getElementById('clearAllBtn')?.addEventListener('click', () => {
-        if (confirm('Hapus SEMUA data?')) { transactions = []; refreshUI(); }
+        if (confirm('Hapus SEMUA data?')) {
+            transactions = [];
+            refreshUI();
+        }
     });
+    
     document.getElementById('updateTargetBtn')?.addEventListener('click', () => {
         let v = parseFloat(document.getElementById('targetInput').value);
         if (!isNaN(v) && v > 0) targetAmount = v;
@@ -1039,6 +1149,5 @@
     loadFromFirebase();
     listenRealtime();
 </script>
-
 </body>
 </html>
