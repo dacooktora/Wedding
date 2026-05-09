@@ -81,6 +81,11 @@
             transition: all 0.2s;
         }
 
+        .btn-small:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 201, 255, 0.3);
+        }
+
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -94,6 +99,12 @@
             border-radius: 16px;
             padding: 12px;
             border: 1px solid rgba(59, 201, 255, 0.25);
+            transition: all 0.3s;
+        }
+
+        .kpi-card:hover {
+            border-color: #3bc9ff;
+            transform: translateY(-3px);
         }
 
         .kpi-label {
@@ -140,17 +151,37 @@
             width: 100% !important;
         }
 
-        /* Scrollable untuk chart sisa dana */
+        /* SCROLLABLE CHART - FIX: card tetap kecil, isi chart yang digeser */
         .scrollable-chart {
+            width: 100%;
             overflow-x: auto;
             overflow-y: hidden;
-            width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
-        
-        .scrollable-chart canvas {
-            min-width: 600px;
-            height: 160px !important;
-            width: auto !important;
+
+        .scrollable-chart::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .scrollable-chart::-webkit-scrollbar-track {
+            background: #1a2c3e;
+            border-radius: 10px;
+        }
+
+        .scrollable-chart::-webkit-scrollbar-thumb {
+            background: #3bc9ff;
+            border-radius: 10px;
+        }
+
+        .scrollable-chart-inner {
+            width: 900px;
+            height: 160px;
+            position: relative;
+        }
+
+        .scrollable-chart-inner canvas {
+            width: 100% !important;
+            height: 100% !important;
         }
 
         @media (max-width: 768px) {
@@ -165,8 +196,9 @@
             .kpi-value {
                 font-size: 1rem;
             }
-            .scrollable-chart canvas {
-                min-width: 500px;
+            .scrollable-chart-inner {
+                width: 750px;
+                height: 150px;
             }
         }
 
@@ -465,6 +497,11 @@
             transition: all 0.2s;
         }
 
+        .btn-futur:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 201, 255, 0.3);
+        }
+
         .sync-badge {
             position: fixed;
             bottom: 12px;
@@ -483,10 +520,6 @@
             opacity: 0.5;
             margin-top: 16px;
             margin-bottom: 35px;
-        }
-        
-        option i {
-            margin-right: 5px;
         }
     </style>
 </head>
@@ -517,7 +550,9 @@
         <div class="chart-card">
             <h3><i class="fas fa-coins"></i> Sisa Dana per Kategori <span style="font-size:0.55rem;">(geser →)</span></h3>
             <div class="scrollable-chart">
-                <canvas id="remainingBudgetChart"></canvas>
+                <div class="scrollable-chart-inner">
+                    <canvas id="remainingBudgetChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -721,15 +756,11 @@
             else if (percent >= 51) statusClass = 'level-51-75';
             else if (percent >= 26) statusClass = 'level-26-50';
             
-            // Cari icon untuk kategori
-            const catData = categoriesList.find(c => c.name === t.category);
-            const iconHtml = catData ? `<i class="${catData.icon}" style="margin-right:6px;"></i>` : '';
-            
             html += `<tr data-idx="${i}">
                 <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
                 <td>
                     <select data-field="category" data-idx="${i}" class="category-select">
-                        ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}><i class="${cat.icon}"></i> ${cat.name}</option>`).join('')}
+                        ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
                     </select>
                 </td>
                 <td>
@@ -750,7 +781,7 @@
                     <i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i>
                     <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i>
                 </td>
-            </td>`;
+            </table>`;
         }
         tbody.innerHTML = html;
         
@@ -797,7 +828,7 @@
     window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
     window.duplicateTx = (i) => { transactions.splice(i, 0, { ...transactions[i] }); refreshUI(); };
     
-    // CHART REMAINING - VERTICAL BAR DENGAN SCROLL
+    // CHART REMAINING - VERTICAL BAR DENGAN SCROLL (FIX: maintainAspectRatio: false)
     function updateRemainingChart() {
         const realPerCat = getRealizationPerCategory();
         let remainingLabels = [], remainingData = [], backgroundColors = [];
@@ -821,7 +852,7 @@
                 data: { labels: remainingLabels, datasets: [{ label: 'Sisa Anggaran (Rp)', data: remainingData, backgroundColor: backgroundColors, borderRadius: 6 }] },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,  // FIX: biar chart nurutin ukuran div inner
                     plugins: { 
                         legend: { position: 'top', labels: { font: { size: 9 } } }, 
                         tooltip: { callbacks: { label: (ctx) => `Sisa: ${formatRp(ctx.raw)}` } }
