@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Wedding Budget | Ultimate Edition</title>
+    <title>Wedding Budget </title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -548,7 +548,7 @@
 </head>
 <body>
 <div class="container">
-    <h1><i class="fas fa-ring"></i> Wedding Budget Ultimate</h1>
+    <h1><i class="fas fa-ring"></i> Wedding Budget | Resa & Delia</h1>
     
     <div class="target-card">
         <i class="fas fa-bullseye" style="color:#2dd4bf;"></i>
@@ -612,7 +612,7 @@
         <button class="btn-futur" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Export Excel</button>
         <button class="btn-futur" id="clearAllBtn"><i class="fas fa-trash-alt"></i> Hapus Semua Data</button>
     </div>
-    <footer>✨ Double klik edit | Kategori dari dropdown | Status = (Jumlah / Anggaran Kategori) × 100% | Live Sync</footer>
+    <footer>Bismillah</footer>
 </div>
 <div class="sync-badge"><i class="fas fa-cloud-upload-alt"></i> Live Sync</div>
 
@@ -627,7 +627,6 @@
         </div>
     </div>
 </div>
-
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyDE1rDGnRJ-S38Qsu7lTUYKUG1fzJhWpRc",
@@ -651,29 +650,39 @@
     let currentCategoryForModal = null;
     
     const categoriesList = [
-        { name: "Prewedding", icon: "fas fa-camera", defaultBudget: 5000000 },
-        { name: "Cincin Kawin", icon: "fas fa-gem", defaultBudget: 3000000 },
-        { name: "Mahar", icon: "fas fa-hand-holding-heart", defaultBudget: 5000000 },
-        { name: "Seserahan", icon: "fas fa-gift", defaultBudget: 2000000 },
-        { name: "Box Seserahan", icon: "fas fa-box", defaultBudget: 1000000 },
-        { name: "Souvenir", icon: "fas fa-mug-hot", defaultBudget: 3000000 },
-        { name: "Buku Tamu", icon: "fas fa-book", defaultBudget: 500000 },
-        { name: "KUA", icon: "fas fa-mosque", defaultBudget: 1000000 },
-        { name: "Catering", icon: "fas fa-utensils", defaultBudget: 10000000 },
-        { name: "Dekorasi", icon: "fas fa-leaf", defaultBudget: 8000000 },
-        { name: "Rias Pengantin", icon: "fas fa-brush", defaultBudget: 4000000 },
-        { name: "Baju Pengantin", icon: "fas fa-tshirt", defaultBudget: 5000000 },
-        { name: "Make Up", icon: "fas fa-palette", defaultBudget: 2000000 },
-        { name: "Pagar Ayu", icon: "fas fa-fan", defaultBudget: 1500000 },
-        { name: "Photo & Video", icon: "fas fa-video", defaultBudget: 7000000 },
-        { name: "Hiburan", icon: "fas fa-music", defaultBudget: 3000000 },
-        { name: "Snack", icon: "fas fa-cookie-bite", defaultBudget: 2000000 },
-        { name: "Saweran", icon: "fas fa-hand-holding-usd", defaultBudget: 2000000 },
-        { name: "Transportasi", icon: "fas fa-car", defaultBudget: 3000000 },
-        { name: "Dokumen", icon: "fas fa-file-alt", defaultBudget: 1000000 },
-        { name: "Laundry", icon: "fas fa-tint", defaultBudget: 500000 },
-        { name: "Akad Nikah", icon: "fas fa-handshake", defaultBudget: 5000000 }
+        { name: "Prewedding", defaultBudget: 5000000 },
+        { name: "Cincin Kawin", defaultBudget: 3000000 },
+        { name: "Mahar", defaultBudget: 5000000 },
+        { name: "Seserahan", defaultBudget: 2000000 },
+        { name: "Box Seserahan", defaultBudget: 1000000 },
+        { name: "Souvenir", defaultBudget: 3000000 },
+        { name: "Buku Tamu", defaultBudget: 500000 },
+        { name: "KUA", defaultBudget: 1000000 },
+        { name: "Catering", defaultBudget: 10000000 },
+        { name: "Dekorasi", defaultBudget: 8000000 },
+        { name: "Rias Pengantin", defaultBudget: 4000000 },
+        { name: "Baju Pengantin", defaultBudget: 5000000 },
+        { name: "Make Up", defaultBudget: 2000000 },
+        { name: "Pagar Ayu", defaultBudget: 1500000 },
+        { name: "Photo & Video", defaultBudget: 7000000 },
+        { name: "Hiburan", defaultBudget: 3000000 },
+        { name: "Snack", defaultBudget: 2000000 },
+        { name: "Saweran", defaultBudget: 2000000 },
+        { name: "Transportasi", defaultBudget: 3000000 },
+        { name: "Undangan", defaultBudget: 1000000 },
+        { name: "Gaji", defaultBudget: 500000 },
+        { name: "Tabungan", defaultBudget: 5000000 }
     ];
+    
+    // Emoji map untuk dropdown kategori
+    const emojiMap = {
+        "Prewedding": "📸", "Cincin Kawin": "💍", "Mahar": "💰", "Seserahan": "🎁",
+        "Box Seserahan": "📦", "Souvenir": "🎁", "Buku Tamu": "📖", "KUA": "🕌",
+        "Catering": "🍽️", "Dekorasi": "🎋", "Rias Pengantin": "💄", "Baju Pengantin": "👗",
+        "Make Up": "💄", "Pagar Ayu": "🌿", "Photo & Video": "📷", "Hiburan": "🎵",
+        "Snack": "🍪", "Saweran": "💵", "Transportasi": "🚗", "Undangan": "📄",
+        "Gaji": "💴", "Tabungan": "🪙"
+    };
     
     function formatRp(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n); }
     function formatNumberDot(n) { return new Intl.NumberFormat('id-ID').format(n); }
@@ -691,31 +700,38 @@
     }
     
     function renderInfoSection() {
-        const container = document.getElementById('categoriesGrid');
-        if (!container) return;
-        const realPerCat = getRealizationPerCategory();
+    const container = document.getElementById('categoriesGrid');
+    if (!container) return;
+    const realPerCat = getRealizationPerCategory();
+    
+    // FILTER: exclude Gaji dan Investasi
+    const weddingCategories = categoriesList.filter(cat => cat.name !== "Gaji" && cat.name !== "Investasi");
+    
+    let html = '';
+    for (let cat of weddingCategories) {
+        const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
+        const real = realPerCat[cat.name] || 0;
+        const note = categoryNotes[cat.name] || '';
+        const notePreview = note.length > 40 ? note.substring(0, 40) + '...' : note;
+        const emoji = emojiMap[cat.name] || "📌";
         
-        let html = '';
-        for (let cat of categoriesList) {
-            const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
-            const real = realPerCat[cat.name] || 0;
-            const note = categoryNotes[cat.name] || '';
-            const notePreview = note.length > 40 ? note.substring(0, 40) + '...' : note;
-            
-            html += `
-                <div class="category-item" data-category="${cat.name}">
-                    <div class="category-main">
-                        <div class="category-icon"><i class="${cat.icon}"></i></div>
-                        <div class="category-name">${cat.name}</div>
-                        <div class="category-real">${formatRp(real)}</div>
-                        <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
-                        <button class="category-note-btn" data-category="${cat.name}" title="Catatan"><i class="fas fa-edit"></i></button>
-                    </div>
-                    ${note ? `<div class="category-note-preview"><i class="fas fa-quote-left"></i> ${escapeHtml(notePreview)}</div>` : ''}
+        html += `
+            <div class="category-item" data-category="${cat.name}">
+                <div class="category-main">
+                    <div class="category-icon">${emoji}</div>
+                    <div class="category-name">${cat.name}</div>
+                    <div class="category-real">${formatRp(real)}</div>
+                    <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
+                    <button class="category-note-btn" data-category="${cat.name}" title="Catatan"><i class="fas fa-edit"></i></button>
                 </div>
-            `;
-        }
-        container.innerHTML = html;
+                ${note ? `<div class="category-note-preview"><i class="fas fa-quote-left"></i> ${escapeHtml(notePreview)}</div>` : ''}
+            </div>
+        `;
+    }
+    container.innerHTML = html;
+    
+    // ... sisanya sama seperti sebelumnya
+    
         
         document.querySelectorAll('.category-budget-input').forEach(input => {
             input.addEventListener('change', (e) => {
@@ -764,7 +780,7 @@
         const tbody = document.getElementById('tableBody');
         if (!tbody) return;
         if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">✨ Klik "Tambah di Atas" ✨</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">✨ Klik "Tambah di Atas" ✨✨ Pastikan anda sudah isi budget di kategori informasi ✨</td></tr>';
             return;
         }
         
@@ -779,11 +795,13 @@
             else if (percent >= 51) statusClass = 'level-51-75';
             else if (percent >= 26) statusClass = 'level-26-50';
             
+            const emoji = emojiMap[t.category] || "📌";
+            
             html += `<tr data-idx="${i}">
                 <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
                 <td>
                     <select data-field="category" data-idx="${i}" class="category-select">
-                        ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
+                        ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}>${emojiMap[cat.name] || "📌"} ${cat.name}</option>`).join('')}
                     </select>
                 </td>
                 <td>
@@ -804,7 +822,7 @@
                     <i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i>
                     <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i>
                 </td>
-            </tr>`;
+             </tr>`;
         }
         tbody.innerHTML = html;
         
@@ -900,7 +918,7 @@
         const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
         if (ctx) {
             if (chartObjs.pie) chartObjs.pie.destroy();
-            chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } } });
+            chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } });
         }
     }
     
@@ -910,7 +928,7 @@
         const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
         if (ctx) {
             if (chartObjs.gauge) chartObjs.gauge.destroy();
-            chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } } });
+            chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } });
         }
     }
     
@@ -919,7 +937,7 @@
         const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
         if (ctx) {
             if (chartObjs.bar) chartObjs.bar.destroy();
-            chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt', font: { size: 9 } } } }, plugins: { legend: { position: 'top', labels: { font: { size: 9 } } } } } });
+            chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt', font: { size: 9 } } } }, plugins: { legend: { position: 'top', labels: { font: { size: 9 } } } } });
         }
     }
     
@@ -978,8 +996,8 @@
             }
             if (!transactions.length) {
                 transactions = [
-                    { date: "2025-05-01", category: "Prewedding", type: "Pemasukan", amount: 25000000 },
-                    { date: "2025-05-03", category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
+                    { date: new Date().toISOString().slice(0,10), category: "Prewedding", type: "Pemasukan", amount: 25000000 },
+                    { date: new Date().toISOString().slice(0,10), category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
                 ];
             }
             isSyncing = false;
@@ -1024,5 +1042,6 @@
     loadFromFirebase();
     listenRealtime();
 </script>
+
 </body>
 </html>
