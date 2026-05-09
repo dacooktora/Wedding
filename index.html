@@ -32,7 +32,6 @@
             width: 100%;
         }
 
-        /* Header */
         h1 {
             font-size: 1.6rem;
             font-weight: 800;
@@ -46,7 +45,6 @@
             gap: 12px;
         }
 
-        /* Target Card */
         .target-card {
             background: rgba(15, 25, 45, 0.7);
             backdrop-filter: blur(10px);
@@ -82,7 +80,6 @@
             transition: all 0.2s;
         }
 
-        /* KPI Grid */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -121,7 +118,6 @@
             color: transparent;
         }
 
-        /* Charts Grid - Responsive */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -149,6 +145,19 @@
             width: 100% !important;
         }
 
+        /* Scroll horizontal untuk chart sisa dana */
+        .horizontal-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            width: 100%;
+        }
+        
+        .horizontal-chart-container {
+            min-width: 800px;
+            height: 250px;
+            position: relative;
+        }
+
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -163,7 +172,6 @@
             }
         }
 
-        /* Progress Section */
         .progress-section {
             background: rgba(7, 19, 31, 0.7);
             backdrop-filter: blur(10px);
@@ -194,7 +202,7 @@
             transition: width 0.3s;
         }
 
-        /* Section Informasi - Grid Kategori */
+        /* Info Section */
         .info-section {
             background: rgba(7, 19, 31, 0.7);
             backdrop-filter: blur(10px);
@@ -216,7 +224,7 @@
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 12px;
         }
 
@@ -224,16 +232,20 @@
             background: rgba(10, 20, 35, 0.6);
             border-radius: 14px;
             padding: 12px 16px;
-            display: flex;
-align-items: center;
-            gap: 12px;
             border: 1px solid rgba(59, 201, 255, 0.15);
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .category-item:hover {
             border-color: #3bc9ff;
             background: rgba(59, 201, 255, 0.05);
+        }
+
+        .category-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .category-icon {
@@ -245,31 +257,114 @@ align-items: center;
         .category-name {
             flex: 1;
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .category-budget-input {
-            width: 130px;
+            width: 120px;
             background: #07131f;
             border: 1px solid #2c4c6c;
             border-radius: 30px;
             padding: 8px 12px;
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-align: right;
-        }
-
-        .category-budget-input:focus {
-            outline: none;
-            border-color: #3bc9ff;
         }
 
         .category-real {
             font-size: 0.7rem;
             color: #aad0ff;
-            min-width: 80px;
+            min-width: 85px;
             text-align: right;
         }
+
+        .category-note-btn {
+            background: none;
+            border: none;
+            color: #3bc9ff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 5px;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .category-note-btn:hover {
+            background: rgba(59, 201, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .category-note-preview {
+            font-size: 0.65rem;
+            color: #8aaec0;
+            margin-top: 8px;
+            padding-left: 48px;
+            font-style: italic;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Modal Catatan */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #0f1e2e;
+            border-radius: 24px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #3bc9ff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 16px;
+            color: #3bc9ff;
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            background: #07131f;
+            border: 1px solid #2c4c6c;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.85rem;
+            resize: vertical;
+            margin-bottom: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-save { background: #10b981; color: white; }
+        .btn-cancel { background: #475569; color: white; }
+        .btn-delete { background: #ef4444; color: white; }
 
         /* Tabel */
         .table-container {
@@ -282,7 +377,7 @@ align-items: center;
 
         .data-table {
             width: 100%;
-            min-width: 750px;
+            min-width: 700px;
             border-collapse: collapse;
             font-size: 0.75rem;
         }
@@ -325,7 +420,6 @@ align-items: center;
             outline: 2px solid #3bc9ff;
         }
 
-        /* Status Bar di Tabel */
         .status-cell {
             min-width: 120px;
         }
@@ -335,7 +429,6 @@ align-items: center;
             border-radius: 20px;
             height: 28px;
             overflow: hidden;
-            position: relative;
         }
 
         .status-bar-fill {
@@ -438,7 +531,14 @@ align-items: center;
         <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Kategori Pengeluaran</h3><canvas id="categoryPieChart"></canvas></div>
         <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Target Nikah</h3><canvas id="targetGaugeChart"></canvas></div>
         <div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Arus Dana</h3><canvas id="incomeExpenseBarChart"></canvas></div>
-        <div class="chart-card"><h3><i class="fas fa-coins"></i> Sisa Dana per Kategori</h3><canvas id="remainingBudgetChart"></canvas></div>
+        <div class="chart-card">
+            <h3><i class="fas fa-coins"></i> Sisa Dana per Kategori <span style="font-size:0.6rem;">(geser →)</span></h3>
+            <div class="horizontal-scroll">
+                <div class="horizontal-chart-container">
+                    <canvas id="remainingBudgetChart" style="height:220px; width:100%;"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- PROGRESS SECTION -->
@@ -451,20 +551,19 @@ align-items: center;
         <div id="cheerMessage" style="margin-top:8px;"></div>
     </div>
 
-    <!-- SECTION INFORMASI - KATEGORI WEDDING -->
+    <!-- SECTION INFORMASI -->
     <div class="info-section">
         <div class="info-title">
             <i class="fas fa-clipboard-list"></i> INFORMASI ANGGARAN PER KATEGORI
-            <span style="font-size:0.7rem; opacity:0.6;">(isi target anggaran masing-masing)</span>
         </div>
         <div class="categories-grid" id="categoriesGrid"></div>
     </div>
 
-    <!-- TABLE EXCEL -->
+    <!-- TABEL EXCEL (Tanpa Deskripsi) -->
     <div class="table-container">
         <table class="data-table">
             <thead>
-                <tr><th>Tanggal</th><th>Deskripsi</th><th>Kategori</th><th>Tipe</th><th>Jumlah (Rp)</th><th>Status</th><th>Aksi</th></tr>
+                <tr><th>Tanggal</th><th>Kategori</th><th>Tipe</th><th>Jumlah (Rp)</th><th>Status</th><th>Aksi</th></tr>
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
@@ -478,6 +577,19 @@ align-items: center;
     <footer>✨ Double klik edit | Kategori dari dropdown | Status = (Jumlah / Anggaran Kategori) × 100% | Live Sync</footer>
 </div>
 <div class="sync-badge"><i class="fas fa-cloud-upload-alt"></i> Live Sync</div>
+
+<!-- MODAL CATATAN -->
+<div id="noteModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalCategoryTitle">Catatan untuk <span id="modalCatName"></span></h3>
+        <textarea id="noteText" rows="4" placeholder="Tulis catatan di sini...&#10;Contoh: Menu ayam, bebek, ikan&#10;DP sudah 5jt&#10;Kontak: 0812xxxx"></textarea>
+        <div class="modal-buttons">
+            <button class="btn-delete" id="deleteNoteBtn">Hapus</button>
+            <button class="btn-cancel" id="cancelNoteBtn">Batal</button>
+            <button class="btn-save" id="saveNoteBtn">Simpan</button>
+        </div>
+    </div>
+</div>
 
 <script>
     // FIREBASE CONFIG
@@ -494,14 +606,14 @@ align-items: center;
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // DATA
     let transactions = [];
     let targetAmount = 75000000;
-    let categoryBudgets = {}; // { "Prewedding": 5000000, ... }
+    let categoryBudgets = {};
+    let categoryNotes = {}; // { "Catering": "Menu ayam bebek..." }
     let isSyncing = false;
     let chartObjs = { pie: null, gauge: null, bar: null, remaining: null };
+    let currentCategoryForModal = null;
     
-    // DAFTAR KATEGORI DENGAN ICON
     const categoriesList = [
         { name: "Prewedding", icon: "fas fa-camera", defaultBudget: 5000000 },
         { name: "Cincin Kawin", icon: "fas fa-gem", defaultBudget: 3000000 },
@@ -527,12 +639,10 @@ align-items: center;
         { name: "Akad Nikah", icon: "fas fa-handshake", defaultBudget: 5000000 }
     ];
     
-    // HELPERS
     function formatRp(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n); }
     function formatNumberDot(n) { return new Intl.NumberFormat('id-ID').format(n); }
     function parseRp(str) { if (!str) return 0; const cleaned = String(str).replace(/[^0-9,-]/g, '').replace(/,/g, ''); return parseFloat(cleaned) || 0; }
     
-    // GET REALISASI PER KATEGORI
     function getRealizationPerCategory() {
         let real = {};
         for (let cat of categoriesList) real[cat.name] = 0;
@@ -544,52 +654,93 @@ align-items: center;
         return real;
     }
     
-    // RENDER SECTION INFORMASI (KATEGORI)
+    // RENDER INFO SECTION
     function renderInfoSection() {
         const container = document.getElementById('categoriesGrid');
         if (!container) return;
+        const realPerCat = getRealizationPerCategory();
+        
         let html = '';
         for (let cat of categoriesList) {
             const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
+            const real = realPerCat[cat.name] || 0;
+            const note = categoryNotes[cat.name] || '';
+            const notePreview = note.length > 40 ? note.substring(0, 40) + '...' : note;
+            
             html += `
-                <div class="category-item">
-                    <div class="category-icon"><i class="${cat.icon}"></i></div>
-                    <div class="category-name">${cat.name}</div>
-                    <div class="category-real" id="real-${cat.name.replace(/ /g, '_')}">Rp 0</div>
-                    <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
+                <div class="category-item" data-category="${cat.name}">
+                    <div class="category-main">
+                        <div class="category-icon"><i class="${cat.icon}"></i></div>
+                        <div class="category-name">${cat.name}</div>
+                        <div class="category-real">${formatRp(real)}</div>
+                        <input type="number" class="category-budget-input" data-category="${cat.name}" value="${budget}" placeholder="Anggaran">
+                        <button class="category-note-btn" data-category="${cat.name}" title="Tambah Catatan"><i class="fas fa-edit"></i></button>
+                    </div>
+                    ${note ? `<div class="category-note-preview"><i class="fas fa-quote-left"></i> ${escapeHtml(notePreview)}</div>` : ''}
                 </div>
             `;
         }
         container.innerHTML = html;
         
-        // Update realisasi
-        const realPerCat = getRealizationPerCategory();
-        for (let cat of categoriesList) {
-            const el = document.getElementById(`real-${cat.name.replace(/ /g, '_')}`);
-            if (el) el.innerText = formatRp(realPerCat[cat.name] || 0);
-        }
-        
-        // Event listener budget change
+        // Event budget change
         document.querySelectorAll('.category-budget-input').forEach(input => {
             input.addEventListener('change', (e) => {
+                e.stopPropagation();
                 const catName = input.getAttribute('data-category');
                 let val = parseFloat(input.value);
-                if (!isNaN(val) && val >= 0) {
-                    categoryBudgets[catName] = val;
-                } else {
-                    categoryBudgets[catName] = 0;
-                }
+                if (!isNaN(val) && val >= 0) categoryBudgets[catName] = val;
+                else categoryBudgets[catName] = 0;
                 refreshUI();
+            });
+        });
+        
+        // Event note button
+        document.querySelectorAll('.category-note-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const catName = btn.getAttribute('data-category');
+                openNoteModal(catName);
             });
         });
     }
     
-    // RENDER TABLE dengan dropdown kategori
+    function openNoteModal(categoryName) {
+        currentCategoryForModal = categoryName;
+        document.getElementById('modalCatName').innerText = categoryName;
+        const existingNote = categoryNotes[categoryName] || '';
+        document.getElementById('noteText').value = existingNote;
+        document.getElementById('noteModal').style.display = 'flex';
+    }
+    
+    function closeNoteModal() {
+        document.getElementById('noteModal').style.display = 'none';
+        currentCategoryForModal = null;
+    }
+    
+    function saveNote() {
+        if (currentCategoryForModal) {
+            const note = document.getElementById('noteText').value;
+            if (note.trim()) categoryNotes[currentCategoryForModal] = note;
+            else delete categoryNotes[currentCategoryForModal];
+            refreshUI();
+        }
+        closeNoteModal();
+    }
+    
+    function deleteNote() {
+        if (currentCategoryForModal) {
+            delete categoryNotes[currentCategoryForModal];
+            refreshUI();
+        }
+        closeNoteModal();
+    }
+    
+    // RENDER TABLE (tanpa deskripsi)
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         if (!tbody) return;
         if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:40px;">✨ Klik "Tambah di Atas" untuk memulai ✨</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;">✨ Klik "Tambah di Atas" untuk memulai ✨</td></tr>';
             return;
         }
         
@@ -606,7 +757,6 @@ align-items: center;
             
             html += `<tr data-idx="${i}">
                 <td contenteditable="true" data-field="date">${escapeHtml(t.date || '')}</td>
-                <td contenteditable="true" data-field="desc">${escapeHtml(t.desc || '')}</td>
                 <td>
                     <select data-field="category" data-idx="${i}" class="category-select">
                         ${categoriesList.map(cat => `<option value="${cat.name}" ${t.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
@@ -630,11 +780,10 @@ align-items: center;
                     <i class="fas fa-trash-alt" onclick="window.deleteTx(${i})"></i>
                     <i class="fas fa-copy" onclick="window.duplicateTx(${i})"></i>
                 </td>
-            </tr>`;
+            </td>`;
         }
         tbody.innerHTML = html;
         
-        // Attach events
         document.querySelectorAll('.category-select').forEach(select => {
             select.addEventListener('change', (e) => {
                 const idx = parseInt(select.getAttribute('data-idx'));
@@ -672,17 +821,48 @@ align-items: center;
             let num = parseRp(val);
             transactions[idx].amount = isNaN(num) ? 0 : num;
         } else if (field === 'date') transactions[idx].date = val;
-        else if (field === 'desc') transactions[idx].desc = val;
         refreshUI();
     }
     
     window.deleteTx = (i) => { transactions.splice(i, 1); refreshUI(); };
     window.duplicateTx = (i) => { transactions.splice(i, 0, { ...transactions[i] }); refreshUI(); };
     
-    // UPDATE CHARTS
-    function updateAllCharts() {
+    // CHART SISA DANA (horizontal bar, warna beda, bisa scroll)
+    function updateRemainingChart() {
         const realPerCat = getRealizationPerCategory();
-        // Pie chart
+        let remainingLabels = [], remainingData = [], backgroundColors = [];
+        const colorPalette = ['#3bc9ff', '#c084fc', '#f59e0b', '#2dd4bf', '#ff6b6b', '#10b981', '#f472b6', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#ef4444', '#14b8a6', '#d946ef', '#f97316'];
+        
+        for (let i = 0; i < categoriesList.length; i++) {
+            const cat = categoriesList[i];
+            const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
+            const real = realPerCat[cat.name] || 0;
+            const remaining = Math.max(0, budget - real);
+            if (remaining > 0 || real > 0) {
+                remainingLabels.push(cat.name);
+                remainingData.push(remaining);
+                backgroundColors.push(colorPalette[i % colorPalette.length]);
+            }
+        }
+        
+        const ctx = document.getElementById('remainingBudgetChart')?.getContext('2d');
+        if (ctx) {
+            if (chartObjs.remaining) chartObjs.remaining.destroy();
+            chartObjs.remaining = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: remainingLabels, datasets: [{ label: 'Sisa Anggaran (Rp)', data: remainingData, backgroundColor: backgroundColors, borderRadius: 6 }] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: { legend: { position: 'top', labels: { font: { size: 9 } } }, tooltip: { callbacks: { label: (ctx) => `Sisa: ${formatRp(ctx.raw)}` } } },
+                    scales: { x: { ticks: { callback: v => (v / 1e6).toFixed(0) + 'jt' } } }
+                }
+            });
+        }
+    }
+    
+    function updatePieChart() {
         let pieData = [], pieLabels = [];
         for (let t of transactions) {
             if (t.type === 'Pengeluaran' && t.category) {
@@ -691,45 +871,37 @@ align-items: center;
                 else { pieLabels.push(t.category); pieData.push(t.amount); }
             }
         }
-        const pieCtx = document.getElementById('categoryPieChart')?.getContext('2d');
-        if (pieCtx) {
+        const ctx = document.getElementById('categoryPieChart')?.getContext('2d');
+        if (ctx) {
             if (chartObjs.pie) chartObjs.pie.destroy();
-            chartObjs.pie = new Chart(pieCtx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true } });
+            chartObjs.pie = new Chart(ctx, { type: 'pie', data: { labels: pieLabels.length ? pieLabels : ['Belum data'], datasets: [{ data: pieData.length ? pieData : [1], backgroundColor: ['#3bc9ff','#c084fc','#f59e0b','#2dd4bf','#ff6b6b','#10b981'] }] }, options: { responsive: true, maintainAspectRatio: true } });
         }
-        
-        // Gauge
+    }
+    
+    function updateGaugeChart() {
         const { income } = calcTotals();
-        const percentTarget = Math.min(100, (income / targetAmount) * 100);
-        const gaugeCtx = document.getElementById('targetGaugeChart')?.getContext('2d');
-        if (gaugeCtx) {
+        const percent = Math.min(100, (income / targetAmount) * 100);
+        const ctx = document.getElementById('targetGaugeChart')?.getContext('2d');
+        if (ctx) {
             if (chartObjs.gauge) chartObjs.gauge.destroy();
-            chartObjs.gauge = new Chart(gaugeCtx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percentTarget, 100-percentTarget], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true } });
+            chartObjs.gauge = new Chart(ctx, { type: 'doughnut', data: { labels: ['Tercapai', 'Sisa'], datasets: [{ data: [percent, 100-percent], backgroundColor: ['#2dd4bf', '#2c3e56'], cutout: '65%' }] }, options: { responsive: true, maintainAspectRatio: true } });
         }
-        
-        // Bar chart
-        const { income: inc, expense: exp } = calcTotals();
-        const barCtx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
-        if (barCtx) {
+    }
+    
+    function updateBarChart() {
+        const { income, expense } = calcTotals();
+        const ctx = document.getElementById('incomeExpenseBarChart')?.getContext('2d');
+        if (ctx) {
             if (chartObjs.bar) chartObjs.bar.destroy();
-            chartObjs.bar = new Chart(barCtx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [inc, exp], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt' } } } } });
+            chartObjs.bar = new Chart(ctx, { type: 'bar', data: { labels: ['Pemasukan', 'Pengeluaran'], datasets: [{ label: 'Rp', data: [income, expense], backgroundColor: ['#3bc9ff', '#ff6b6b'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true, scales: { y: { ticks: { callback: v => (v/1e6).toFixed(0) + 'jt' } } } } });
         }
-        
-        // Remaining budget chart (Anggaran - Realisasi)
-        let remainingLabels = [], remainingData = [];
-        for (let cat of categoriesList) {
-            const budget = categoryBudgets[cat.name] !== undefined ? categoryBudgets[cat.name] : cat.defaultBudget;
-            const real = realPerCat[cat.name] || 0;
-            const remaining = Math.max(0, budget - real);
-            if (remaining > 0 || real > 0) {
-                remainingLabels.push(cat.name);
-                remainingData.push(remaining);
-            }
-        }
-        const remainCtx = document.getElementById('remainingBudgetChart')?.getContext('2d');
-        if (remainCtx) {
-            if (chartObjs.remaining) chartObjs.remaining.destroy();
-            chartObjs.remaining = new Chart(remainCtx, { type: 'bar', data: { labels: remainingLabels.length ? remainingLabels : ['Belum data'], datasets: [{ label: 'Sisa Anggaran (Rp)', data: remainingData.length ? remainingData : [0], backgroundColor: '#10b981', borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true, indexAxis: 'y', plugins: { legend: { position: 'top' } } } });
-        }
+    }
+    
+    function updateAllCharts() {
+        updatePieChart();
+        updateGaugeChart();
+        updateBarChart();
+        updateRemainingChart();
     }
     
     function calcTotals() {
@@ -764,7 +936,7 @@ align-items: center;
     function refreshUI() {
         if (isSyncing) return;
         renderOnly();
-        database.ref('weddingData').set({ transactions, targetAmount, categoryBudgets, updated: Date.now() }).catch(console.warn);
+        database.ref('weddingData').set({ transactions, targetAmount, categoryBudgets, categoryNotes, updated: Date.now() }).catch(console.warn);
     }
     
     function loadFromFirebase() {
@@ -774,11 +946,14 @@ align-items: center;
             if (d?.transactions) transactions = d.transactions;
             if (d?.targetAmount) targetAmount = d.targetAmount;
             if (d?.categoryBudgets) categoryBudgets = d.categoryBudgets;
-            else { for (let cat of categoriesList) categoryBudgets[cat.name] = cat.defaultBudget; }
+            if (d?.categoryNotes) categoryNotes = d.categoryNotes;
+            for (let cat of categoriesList) {
+                if (categoryBudgets[cat.name] === undefined) categoryBudgets[cat.name] = cat.defaultBudget;
+            }
             if (!transactions.length) {
                 transactions = [
-                    { date: "2025-05-01", desc: "Gaji", category: "Prewedding", type: "Pemasukan", amount: 25000000 },
-                    { date: "2025-05-03", desc: "DP Venue", category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
+                    { date: "2025-05-01", desc: "", category: "Prewedding", type: "Pemasukan", amount: 25000000 },
+                    { date: "2025-05-03", desc: "", category: "Dekorasi", type: "Pengeluaran", amount: 5000000 }
                 ];
             }
             isSyncing = false;
@@ -790,19 +965,19 @@ align-items: center;
         database.ref('weddingData').on('value', snap => {
             if (!isSyncing) {
                 const d = snap.val();
-                if (d?.transactions) { transactions = d.transactions; targetAmount = d.targetAmount || 75000000; categoryBudgets = d.categoryBudgets || {}; renderOnly(); }
+                if (d?.transactions) { transactions = d.transactions; targetAmount = d.targetAmount || 75000000; categoryBudgets = d.categoryBudgets || {}; categoryNotes = d.categoryNotes || {}; renderOnly(); }
             }
         });
     }
     
-    // EVENTS
+    // EVENT LISTENERS
     document.getElementById('addRowBtn')?.addEventListener('click', () => {
-        transactions.unshift({ date: new Date().toISOString().slice(0,10), desc: "Item baru", category: "Prewedding", type: "Pengeluaran", amount: 0 });
+        transactions.unshift({ date: new Date().toISOString().slice(0,10), category: "Prewedding", type: "Pengeluaran", amount: 0 });
         refreshUI();
     });
     document.getElementById('exportExcelBtn')?.addEventListener('click', () => {
-        const exportData = transactions.map(t => [t.date, t.desc, t.category, t.type, t.amount || 0]);
-        const ws = XLSX.utils.aoa_to_sheet([["Tanggal","Deskripsi","Kategori","Tipe","Jumlah"], ...exportData]);
+        const exportData = transactions.map(t => [t.date, t.category, t.type, t.amount || 0]);
+        const ws = XLSX.utils.aoa_to_sheet([["Tanggal","Kategori","Tipe","Jumlah"], ...exportData]);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "WeddingBudget");
         XLSX.writeFile(wb, `wedding_${new Date().toISOString().slice(0,10)}.xlsx`);
@@ -815,6 +990,12 @@ align-items: center;
         if (!isNaN(v) && v > 0) targetAmount = v;
         refreshUI();
     });
+    
+    // MODAL EVENTS
+    document.getElementById('saveNoteBtn')?.addEventListener('click', saveNote);
+    document.getElementById('cancelNoteBtn')?.addEventListener('click', closeNoteModal);
+    document.getElementById('deleteNoteBtn')?.addEventListener('click', deleteNote);
+    window.addEventListener('click', (e) => { if (e.target === document.getElementById('noteModal')) closeNoteModal(); });
     
     loadFromFirebase();
     listenRealtime();
